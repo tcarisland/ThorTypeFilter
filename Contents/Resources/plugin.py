@@ -18,28 +18,30 @@ from __future__ import division, print_function, unicode_literals
 import objc
 from GlyphsApp import *
 from GlyphsApp.plugins import *
+from Foundation import NSClassFromString
 
 class ThorTypeFilter(FilterWithDialog):
 
-	# Definitions of IBOutlets
+	prefID= "com.tcarisland.ThorTypeFilter"
+	if Glyphs.versionNumber < 3:
+		# GLYPHS 2
+		pathOperator = NSClassFromString("GSPathOperator").alloc().init() # needs to be initialized only once
 
+	# Definitions of IBOutlets
 	# The NSView object from the User Interface. Keep this here!
 	dialog = objc.IBOutlet()
-
 	# Text field in dialog
 	myTextField = objc.IBOutlet()
+	myOtherTextField = objc.IBOutlet()
 
 	@objc.python_method
 	def settings(self):
 		self.menuName = Glyphs.localize({
-			'en': 'My Filter',
-			'de': 'Mein Filter',
-			'fr': 'Mon filtre',
-			'es': 'Mi filtro',
-			'pt': 'Meu filtro',
-			'jp': '私のフィルター',
-			'ko': '내 필터',
-			'zh': '我的过滤器',
+			'en': 'ThorType Filter',
+			'de': 'ThorType Filter',
+			'fr': 'ThorType filtre',
+			'es': 'ThorType filtro',
+			'pt': 'ThorType filtro',
 			})
 		
 		# Word on Run Button (default: Apply)
@@ -49,57 +51,77 @@ class ThorTypeFilter(FilterWithDialog):
 			'fr': 'Appliquer',
 			'es': 'Aplicar',
 			'pt': 'Aplique',
-			'jp': '申し込む',
-			'ko': '대다',
-			'zh': '应用',
 			})
-		
 		# Load dialog from .nib (without .extension)
 		self.loadNib('IBdialog', __file__)
 
 	# On dialog show
 	@objc.python_method
 	def start(self):
-		
 		# Set default value
-		Glyphs.registerDefault('com.myname.myfilter.value', 15.0)
-		
+		self.registerDefaults()
+
 		# Set value of text field
-		self.myTextField.setStringValue_(Glyphs.defaults['com.myname.myfilter.value'])
-		
+		self.myTextField.setStringValue_(self.pref('firstValue'))
+		self.myOtherTextField.setStringValue_(self.pref('secondValue'))
 		# Set focus to text field
 		self.myTextField.becomeFirstResponder()
 
-	# Action triggered by UI
+		self.update()
+
+	@objc.python_method
+	def registerDefaults(self, sender=None):
+		print("registerDefaults Called")
+		Glyphs.registerDefault(self.domain('firstValue'), 15.0)
+		Glyphs.registerDefault(self.domain('secondValue'), 25.0)
+
+	@objc.python_method
+	def domain(self, prefName):
+		prefName = prefName.strip().strip(".")
+		return self.prefID + "." + prefName.strip()
+
+	@objc.python_method
+	def pref(self, prefName):
+		prefDomain = self.domain(prefName)
+		return Glyphs.defaults[prefDomain]
+	
 	@objc.IBAction
-	def setValue_( self, sender ):
-		
-		# Store value coming in from dialog
-		Glyphs.defaults['com.myname.myfilter.shift'] = sender.floatValue()
-		
-		# Trigger redraw
+	def setFirstValue_( self, sender ):
+		fv = sender.floatValue()
+		print("setFirstValue called " + str(fv))
+		Glyphs.defaults[self.domain('firstValue')] = fv
+		self.update()
+
+	@objc.IBAction
+	def setSecondValue_( self, sender):
+		Glyphs.defaults[self.domain('secondValue')] = sender.floatValue()
 		self.update()
 
 	# Actual filter
 	@objc.python_method
 	def filter(self, layer, inEditView, customParameters):
-		
-		# Called on font export, get value from customParameters
-		if "shift" in customParameters:
-			value = customParameters['shift']
-		
-		# Called through UI, use stored value
-		else:
-			value = float(Glyphs.defaults['com.myname.myfilter.shift'])
-		
-		# Shift all nodes in x and y direction by the value
-		for path in layer.paths:
-			for node in path.nodes:
-				node.position = NSPoint(node.position.x + value, node.position.y + value)
-
+		print("ThorType Filter apply clicked")
+		print("CUSTOM PARAMETERS")
+		print(customParameters)
+		if len(customParameters) > 0:
+			if 'firstValue' in customParameters:
+				print("FIRST VALUE " + customParameters['firstValue'])
+			if 'secondValue' in customParameters:
+				print("SECOND VALUE" + customParameters['secondValue'])
+		else: 
+			firstValue = float(self.pref('firstValue'))
+			print("FIRST VALUE ELSE" + str(firstValue))
+			secondValue = float(self.pref('secondValue'))
+			print("SECOND VALUE ELSE " + str(secondValue))
+	
 	@objc.python_method
 	def generateCustomParameter( self ):
-		return "%s; shift:%s;" % (self.__class__.__name__, Glyphs.defaults['com.myname.myfilter.shift'] )
+		self.registerDefaults()
+		return "%s; firstValue:%s secondValue:%s" % (
+			self.__class__.__name__,
+			self.pref('firstValue'),
+			self.pref('secondValue'),
+			)
 
 	@objc.python_method
 	def __file__(self):
