@@ -19,6 +19,7 @@ import objc
 from GlyphsApp import *
 from GlyphsApp.plugins import *
 from Foundation import NSClassFromString
+from filterutils import runFilter
 
 class ThorTypeFilter(FilterWithDialog):
 
@@ -60,18 +61,15 @@ class ThorTypeFilter(FilterWithDialog):
 	def start(self):
 		# Set default value
 		self.registerDefaults()
-
 		# Set value of text field
 		self.myTextField.setStringValue_(self.pref('firstValue'))
 		self.myOtherTextField.setStringValue_(self.pref('secondValue'))
 		# Set focus to text field
 		self.myTextField.becomeFirstResponder()
-
 		self.update()
 
 	@objc.python_method
 	def registerDefaults(self, sender=None):
-		print("registerDefaults Called")
 		Glyphs.registerDefault(self.domain('firstValue'), 15.0)
 		Glyphs.registerDefault(self.domain('secondValue'), 25.0)
 
@@ -87,9 +85,7 @@ class ThorTypeFilter(FilterWithDialog):
 	
 	@objc.IBAction
 	def setFirstValue_( self, sender ):
-		fv = sender.floatValue()
-		print("setFirstValue called " + str(fv))
-		Glyphs.defaults[self.domain('firstValue')] = fv
+		Glyphs.defaults[self.domain('firstValue')] = sender.floatValue()
 		self.update()
 
 	@objc.IBAction
@@ -100,9 +96,7 @@ class ThorTypeFilter(FilterWithDialog):
 	# Actual filter
 	@objc.python_method
 	def filter(self, layer, inEditView, customParameters):
-		print("ThorType Filter apply clicked")
-		print("CUSTOM PARAMETERS")
-		print(customParameters)
+		#print("ThorType Filter apply clicked - inEditView - " + str(inEditView))
 		if len(customParameters) > 0:
 			if 'firstValue' in customParameters:
 				print("FIRST VALUE " + customParameters['firstValue'])
@@ -110,9 +104,8 @@ class ThorTypeFilter(FilterWithDialog):
 				print("SECOND VALUE" + customParameters['secondValue'])
 		else: 
 			firstValue = float(self.pref('firstValue'))
-			print("FIRST VALUE ELSE" + str(firstValue))
 			secondValue = float(self.pref('secondValue'))
-			print("SECOND VALUE ELSE " + str(secondValue))
+			runFilter(layer.parent, layer)
 	
 	@objc.python_method
 	def generateCustomParameter( self ):
