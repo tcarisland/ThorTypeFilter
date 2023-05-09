@@ -19,7 +19,7 @@ import objc
 from GlyphsApp import *
 from GlyphsApp.plugins import *
 from Foundation import NSClassFromString
-from filterutils import runFilter
+from filterutils import FilterHelper
 
 class ThorTypeFilter(FilterWithDialog):
 
@@ -62,16 +62,16 @@ class ThorTypeFilter(FilterWithDialog):
 		# Set default value
 		self.registerDefaults()
 		# Set value of text field
-		self.myTextField.setStringValue_(self.pref('firstValue'))
-		self.myOtherTextField.setStringValue_(self.pref('secondValue'))
+		self.myTextField.setStringValue_(self.pref('strokeWidth'))
+		self.myOtherTextField.setStringValue_(self.pref('insetWidth'))
 		# Set focus to text field
 		self.myTextField.becomeFirstResponder()
 		self.update()
 
 	@objc.python_method
 	def registerDefaults(self, sender=None):
-		Glyphs.registerDefault(self.domain('firstValue'), 15.0)
-		Glyphs.registerDefault(self.domain('secondValue'), 25.0)
+		Glyphs.registerDefault(self.domain('strokeWidth'), 10.0)
+		Glyphs.registerDefault(self.domain('insetWidth'), 30.0)
 
 	@objc.python_method
 	def domain(self, prefName):
@@ -84,13 +84,13 @@ class ThorTypeFilter(FilterWithDialog):
 		return Glyphs.defaults[prefDomain]
 	
 	@objc.IBAction
-	def setFirstValue_( self, sender ):
-		Glyphs.defaults[self.domain('firstValue')] = sender.floatValue()
+	def setStrokeWidth_( self, sender ):
+		Glyphs.defaults[self.domain('strokeWidth')] = sender.floatValue()
 		self.update()
 
 	@objc.IBAction
-	def setSecondValue_( self, sender):
-		Glyphs.defaults[self.domain('secondValue')] = sender.floatValue()
+	def setInsetWidth_( self, sender):
+		Glyphs.defaults[self.domain('insetWidth')] = sender.floatValue()
 		self.update()
 
 	# Actual filter
@@ -98,22 +98,23 @@ class ThorTypeFilter(FilterWithDialog):
 	def filter(self, layer, inEditView, customParameters):
 		#print("ThorType Filter apply clicked - inEditView - " + str(inEditView))
 		if len(customParameters) > 0:
-			if 'firstValue' in customParameters:
-				print("FIRST VALUE " + customParameters['firstValue'])
-			if 'secondValue' in customParameters:
-				print("SECOND VALUE" + customParameters['secondValue'])
+			if 'strokeWidth' in customParameters:
+				print("FIRST VALUE " + customParameters['strokeWidth'])
+			if 'insetWidth' in customParameters:
+				print("SECOND VALUE" + customParameters['insetWidth'])
 		else: 
-			firstValue = float(self.pref('firstValue'))
-			secondValue = float(self.pref('secondValue'))
-			runFilter(layer.parent, layer)
+			strokeWidth = float(self.pref('strokeWidth'))
+			insetWidth = float(self.pref('insetWidth'))
+		filterHelper = FilterHelper(outlineStrokeWidth=strokeWidth, insetWidth=insetWidth, thisLayer=layer)
+		filterHelper.runFilter()
 	
 	@objc.python_method
 	def generateCustomParameter( self ):
 		self.registerDefaults()
-		return "%s; firstValue:%s secondValue:%s" % (
+		return "%s; strokeWidth:%s insetWidth:%s" % (
 			self.__class__.__name__,
-			self.pref('firstValue'),
-			self.pref('secondValue'),
+			self.pref('strokeWidth'),
+			self.pref('insetWidth'),
 			)
 
 	@objc.python_method
