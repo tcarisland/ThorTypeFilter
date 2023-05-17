@@ -18,16 +18,13 @@ class ThorTypeEffects():
         return round(y_final)
 
     @objc.python_method
-    def hatchOutline(self, sourceLayer, strokeWidth, hatchDistance, theta, yStart, descender, height):
-        print("hatchOutline called")
-        print(sourceLayer.shapes)
+    def createOutlineHatch(self, sourceLayer, strokeWidth, hatchDistance, theta, yStart, descender, height):
         x = sourceLayer.width
         y = yStart + height
         y_final = self.getAngleEndCoordinates(x, y, theta)
         i = 0
         shapes = []	
         hatchLayer = copy.deepcopy(sourceLayer)
-        shapeLayer = copy.deepcopy(sourceLayer)
         while y_final > descender and abs(y_final) < 2000: 
             start = GSNode()
             end = GSNode()
@@ -46,9 +43,4 @@ class ThorTypeEffects():
         hatchLayer.flattenOutlinesRemoveOverlap_origHints_secondaryPath_extraHandles_error_(False,None,None,None,None)
         hatchLayer.cleanUpPaths()
         hatchLayer.removeOverlap()
-        shapeLayer.shapes = Glyphs.intersectPaths(shapeLayer.shapes, hatchLayer.shapes)
-        shapeLayer.cleanUpPaths()
-        shapeLayer.removeOverlap()
-        print("SHAPES")
-        print(shapeLayer.shapes)
-        return shapeLayer.shapes
+        return hatchLayer.shapes

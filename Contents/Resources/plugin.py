@@ -16,10 +16,12 @@
 
 from __future__ import division, print_function, unicode_literals
 import objc
+import copy
 from GlyphsApp import *
 from GlyphsApp.plugins import *
 from Foundation import NSClassFromString
 from filterutils import FilterHelper
+from effects import ThorTypeEffects
 
 class ThorTypeFilter(FilterWithDialog):
 
@@ -96,7 +98,6 @@ class ThorTypeFilter(FilterWithDialog):
 	# Actual filter
 	@objc.python_method
 	def filter(self, layer, inEditView, customParameters):
-		#print("ThorType Filter apply clicked - inEditView - " + str(inEditView))
 		if len(customParameters) > 0:
 			if 'strokeWidth' in customParameters:
 				print("FIRST VALUE " + customParameters['strokeWidth'])
@@ -106,7 +107,14 @@ class ThorTypeFilter(FilterWithDialog):
 			strokeWidth = float(self.pref('strokeWidth'))
 			insetWidth = float(self.pref('insetWidth'))
 		filterHelper = FilterHelper(outlineStrokeWidth=strokeWidth, insetWidth=insetWidth, thisLayer=layer)
-		filterHelper.runFilter()
+		thorTypeEffects = ThorTypeEffects()
+		outlineShapes = filterHelper.createOutlineGlyphCopy()
+		insetShapes = filterHelper.createInsetGlyphCopy()
+		hatchShapes = thorTypeEffects.createOutlineHatch(layer, 10, 30, 45, 100, -200, 800)
+		pathOperator = objc.lookUpClass("GSPathOperator")
+		#pathOperator = GSPathOperator.alloc().init()
+		hatchShapes = pathOperator.intersectPaths_from_error_(insetShapes, hatchShapes, None)
+		layer.shapes = outlineShapes + hatchShapes
 	
 	@objc.python_method
 	def generateCustomParameter( self ):

@@ -1,6 +1,5 @@
 import copy
 import objc
-from effects import ThorTypeEffects
 
 class FilterHelper():
 
@@ -28,10 +27,7 @@ class FilterHelper():
 		self.insetLayer.shapes = self.removeOuter(self.insetLayer)
 		if len(self.insetLayer.shapes) > 1:
 			self.insetLayer.shapes = self.removeCounter(self.insetLayer)
-
-		thorTypeEffects = ThorTypeEffects()
-		hatchShapes = thorTypeEffects.hatchOutline(self.insetLayer, 10, 30, 45, 100, -200, 800)
-		return hatchShapes
+		return self.insetLayer.shapes
 		
 	@objc.python_method
 	def findMinMax(self, thisLayer):
@@ -95,10 +91,4 @@ class FilterHelper():
 			if(node.position.y == minMax[3]):
 				maxy = True
 		return minx and miny and maxx and maxy
-
-	@objc.python_method
-	def runFilter(self):
-		outlineShapes = self.createOutlineGlyphCopy()
-		insetShapes = self.createInsetGlyphCopy()
-		self.sourceLayer.shapes = outlineShapes + insetShapes
 
