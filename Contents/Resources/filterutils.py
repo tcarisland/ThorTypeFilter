@@ -1,5 +1,8 @@
 import copy
+import math
 import objc
+from Foundation import NSPoint
+from Foundation import NSClassFromString
 
 class FilterHelper():
 
@@ -27,8 +30,45 @@ class FilterHelper():
 		self.insetLayer.shapes = self.removeOuter(self.insetLayer)
 		if len(self.insetLayer.shapes) > 1:
 			self.insetLayer.shapes = self.removeCounter(self.insetLayer)
-		return self.insetLayer.shapes
-		
+		self.insetLayer.cutBetweenPoints(NSPoint(0, 189), NSPoint(500, self.getAngleEndCoordinates(500, 189, 45)))
+		shapes = self.removeUpper(self.insetLayer, 189, 45)
+		return shapes[0] + shapes[1]
+	
+	@objc.python_method
+	def removeUpper(self, layer, yInitial, theta):
+		lower = []
+		upper = []
+		errormargin = 1
+		print("running removeUpper " + str(len(layer.shapes)))
+		for myShape in layer.shapes:			
+			isBelow = True
+			for node in myShape.nodes:
+				y_final = self.getAngleEndCoordinates(node.position.x, yInitial, theta)
+				if (node.position.y - errormargin) >= y_final:
+					isBelow = False
+			if isBelow:
+				print("adding shape : " + str(myShape))
+				lower.append(myShape)
+			else:
+				upper.append(myShape)
+		layerCopy = copy.deepcopy(layer)
+		layerCopy.shapes = lower
+		lower = self.hatchLayer(layerCopy, theta)
+		return [lower, upper]
+
+	@objc.python_method
+	def hatchLayer(self, layer, theta):
+		HatchOutlineFilter = NSClassFromString("HatchOutlineFilter")
+		HatchOutlineFilter.hatchLayer_origin_stepWidth_angle_offset_checkSelection_shadowLayer_(layer, (10, 10), 20, theta, 0, False, None)
+		return layer.shapes
+				
+	@objc.python_method
+	def getAngleEndCoordinates(self, x, y, theta):
+		theta_rad = math.radians(theta)
+		delta_y = math.tan(theta_rad) * x
+		y_final = y + delta_y
+		return round(y_final)
+	
 	@objc.python_method
 	def findMinMax(self, thisLayer):
 		minx = -1 

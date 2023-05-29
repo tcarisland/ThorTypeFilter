@@ -107,14 +107,9 @@ class ThorTypeFilter(FilterWithDialog):
 			strokeWidth = float(self.pref('strokeWidth'))
 			insetWidth = float(self.pref('insetWidth'))
 		filterHelper = FilterHelper(outlineStrokeWidth=strokeWidth, insetWidth=insetWidth, thisLayer=layer)
-		thorTypeEffects = ThorTypeEffects()
 		outlineShapes = filterHelper.createOutlineGlyphCopy()
 		insetShapes = filterHelper.createInsetGlyphCopy()
-		hatchShapes = thorTypeEffects.createOutlineHatch(layer, 10, 30, 45, 100, -200, 800)
-		pathOperator = objc.lookUpClass("GSPathOperator")
-		#pathOperator = GSPathOperator.alloc().init()
-		hatchShapes = pathOperator.intersectPaths_from_error_(insetShapes, hatchShapes, None)
-		layer.shapes = outlineShapes + hatchShapes
+		layer.shapes = outlineShapes + insetShapes
 	
 	@objc.python_method
 	def generateCustomParameter( self ):
