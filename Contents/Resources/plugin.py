@@ -107,9 +107,13 @@ class ThorTypeFilter(FilterWithDialog):
 			strokeWidth = float(self.pref('strokeWidth'))
 			insetWidth = float(self.pref('insetWidth'))
 		filterHelper = FilterHelper(outlineStrokeWidth=strokeWidth, insetWidth=insetWidth, thisLayer=layer)
-		outlineShapes = filterHelper.createOutlineGlyphCopy()
-		insetShapes = filterHelper.createInsetGlyphCopy()
-		layer.shapes = outlineShapes + insetShapes
+		outlineLayer = filterHelper.createOutlineGlyphCopy(layer)
+		insetLayer = filterHelper.createInsetGlyphCopy(layer)
+		splitLayer = filterHelper.splitAndHatch(insetLayer, 189, 45, 500)
+
+		shadowBaseLayer = filterHelper.prepareOutlineForShadow(layer)
+
+		layer.shapes = outlineLayer.shapes + splitLayer.shapes
 	
 	@objc.python_method
 	def generateCustomParameter( self ):

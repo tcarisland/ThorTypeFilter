@@ -10,32 +10,41 @@ class FilterHelper():
 		super().__init__()
 		self.sourceLayer = thisLayer
 		self.outlineStrokeWidth = outlineStrokeWidth
-		self.outlineLayer = copy.deepcopy(thisLayer)
 		self.insetWidth = insetWidth
-		self.insetLayer = copy.deepcopy(thisLayer)
 
 	@objc.python_method
-	def createOutlineGlyphCopy(self):
-		for newPath in self.outlineLayer.shapes:
+	def createOutlineGlyphCopy(self, sourceLayer):
+		layer = copy.deepcopy(sourceLayer)
+		for newPath in layer.shapes:
 			newPath.setAttribute_forKey_(self.outlineStrokeWidth, "strokeWidth")
-		self.outlineLayer.flattenOutlinesRemoveOverlap_origHints_secondaryPath_extraHandles_error_(False,None,None,None,None)
-		return self.outlineLayer.shapes
+		layer.flattenOutlinesRemoveOverlap_origHints_secondaryPath_extraHandles_error_(False,None,None,None,None)
+		return layer
+	
+	def prepareOutlineForShadow(self, sourceLayer):
+		layer = copy.deepcopy(sourceLayer)
+		for newPath in layer.shapes:
+			newPath.setAttribute_forKey_(self.outlineStrokeWidth, "strokeWidth")
+		layer.flattenOutlinesRemoveOverlap_origHints_secondaryPath_extraHandles_error_(False,None,None,None,None)
+		layer.shapes = layer.shapes + sourceLayer.shapes
+		layer.removeOverlap()
+		return layer
 		
 	@objc.python_method
-	def createInsetGlyphCopy(self):
-		for newPath in self.insetLayer.shapes:
+	def createInsetGlyphCopy(self, sourceLayer):
+		layer = copy.deepcopy(sourceLayer)
+		for newPath in layer.shapes:
 			newPath.setAttribute_forKey_(self.insetWidth, "strokeWidth")
-		self.insetLayer.flattenOutlinesRemoveOverlap_origHints_secondaryPath_extraHandles_error_(False,None,None,None,None)
-		self.insetLayer.removeOverlap()
-		self.insetLayer.shapes = self.removeOuter(self.insetLayer)
-		if len(self.insetLayer.shapes) > 1:
-			self.insetLayer.shapes = self.removeCounter(self.insetLayer)
-		self.insetLayer.cutBetweenPoints(NSPoint(0, 189), NSPoint(500, self.getAngleEndCoordinates(500, 189, 45)))
-		shapes = self.removeUpper(self.insetLayer, 189, 45)
-		return shapes[0] + shapes[1]
-	
+		layer.flattenOutlinesRemoveOverlap_origHints_secondaryPath_extraHandles_error_(False,None,None,None,None)
+		layer.removeOverlap()
+		layer.shapes = self.removeOuter(layer)
+		if len(layer.shapes) > 1:
+			layer.shapes = self.removeCounter(layer)
+		return layer
+		
 	@objc.python_method
-	def removeUpper(self, layer, yInitial, theta):
+	def splitAndHatch(self, sourceLayer, yInitial, theta, width):
+		layer = copy.deepcopy(sourceLayer)
+		layer.cutBetweenPoints(NSPoint(0, yInitial), NSPoint(width, self.getAngleEndCoordinates(width, yInitial, theta)))
 		lower = []
 		upper = []
 		errormargin = 1
@@ -54,12 +63,17 @@ class FilterHelper():
 		layerCopy = copy.deepcopy(layer)
 		layerCopy.shapes = lower
 		lower = self.hatchLayer(layerCopy, theta)
-		return [lower, upper]
+		layer.shapes = lower + upper
+		return layer
 
 	@objc.python_method
 	def hatchLayer(self, layer, theta):
 		HatchOutlineFilter = NSClassFromString("HatchOutlineFilter")
 		HatchOutlineFilter.hatchLayer_origin_stepWidth_angle_offset_checkSelection_shadowLayer_(layer, (10, 10), 20, theta, 0, False, None)
+		for myShape in layer.shapes:
+			myShape.setAttribute_forKey_(10, "strokeWidth")
+			myShape.setAttribute_forKey_(2, "lineCapEnd")
+			myShape.setAttribute_forKey_(2, "lineCapStart")
 		return layer.shapes
 				
 	@objc.python_method
