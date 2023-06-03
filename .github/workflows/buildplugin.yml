@@ -37,6 +37,7 @@ jobs:
           username: tcarisland
           password: ${{secrets.TCARISLAND_SFTP_PASSWD}}
           source: ThorTypeFilter.glyphsFilter.zip
+          overwrite: true
           target: /home/6/t/tcarisland/www/thortype
 
 
