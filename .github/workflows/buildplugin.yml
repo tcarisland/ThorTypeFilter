@@ -2,11 +2,11 @@ name: MacOS Workflow
 on: [workflow_dispatch]
 
 jobs:
-  k6_local_test:
-    name: k6 local test on macos
+  build_plugin:
+    name: Build Plugin
     runs-on: macos-latest
 
     steps:
       - name: Run compile script
-        run: ./compile.sh
+        run: ls .
 
