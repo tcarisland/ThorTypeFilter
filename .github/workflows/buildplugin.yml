@@ -29,6 +29,6 @@ jobs:
           name: ThorTypeFilter.glyphsFilter
           path: ./ThorTypeFilter.glyphsFilter
       - name: List Files
-        run: ls .
+        run: ls ./ThorTypeFilter.glyphsFilter
 
 
