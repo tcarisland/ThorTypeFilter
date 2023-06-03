@@ -8,20 +8,20 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Check find
-        run: which find
-
-      - name: Check ibtool
-        run: which ibtool
-
-      - name: Check ibtool version
-        run: ibtool --version
-
       - name: Run compile script
         run: find . -name "*.xib" -type f | awk '{sub(/.xib/,"");print}' | xargs -I % ibtool --compile %.nib %.xib
         working-directory: ./ThorTypeFilter.glyphsFilter/Contents/Resources
-        
-      - uses: actions/upload-artifact@v2
+
+      - name: Zip Directory
+        run: zip -r ThorTypeFilter.glyphsFilter.zip ThorTypeFilter.glyphsFilter
+
+      - uses: actions/checkout@v3
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@v0.1.4
         with:
-          name: ThorTypeFilter.glyphsFilter
-          path: ./ThorTypeFilter.glyphsFilter
+          host: scp.domeneshop.no
+          username: tcarisland
+          password: ${{ secrets.TCARISLAND_SFTP_PASSWD }}
+          port: 22
+          source: "ThorTypeFilter.glyphsFilter.zip"
+          target: ~/www/thortype/filter
