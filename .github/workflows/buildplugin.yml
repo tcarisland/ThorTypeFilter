@@ -1,5 +1,5 @@
 name: MacOS Workflow
-on: [workflow_dispatch, push]
+on: [workflow_dispatch]
 
 jobs:
   build_plugin:
@@ -8,36 +8,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - uses: stefanzweifel/git-auto-commit-action@v4
+
       - name: Run compile script
         run: find . -name "*.xib" -type f | awk '{sub(/.xib/,"");print}' | xargs -I % ibtool --compile %.nib %.xib
         working-directory: ./ThorTypeFilter.glyphsFilter/Contents/Resources
-        
-      - uses: actions/upload-artifact@v2
-        with:
-          name: ThorTypeFilter.glyphsFilter
-          path: ./ThorTypeFilter.glyphsFilter
-    
-  upload_plugin:
-    name: Upload Plugin
-    runs-on: ubuntu-latest
-    needs: build_plugin
-
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: ThorTypeFilter.glyphsFilter
-          path: ./ThorTypeFilter.glyphsFilter
-      - name: Zip Files
-        run: zip -r ThorTypeFilter.glyphsFilter.zip ThorTypeFilter.glyphsFilter
-      - name: copy file via ssh password
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: scp.domeneshop.no
-          username: tcarisland
-          password: ${{secrets.TCARISLAND_SFTP_PASSWD}}
-          source: "./ThorTypeFilter.glyphsFilter.zip"
-          overwrite: true
-          target: /home/6/t/tcarisland/www/thortype/
+      
 
 
