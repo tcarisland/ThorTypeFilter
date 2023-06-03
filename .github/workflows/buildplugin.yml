@@ -33,11 +33,11 @@ jobs:
       - name: copy file via ssh password
         uses: appleboy/scp-action@v0.1.4
         with:
-          host: ${{ secrets.TCARISLAND_SFTP_HOST }}
-          username: ${{ secrets.TCARISLAND_SFTP_USER }}
+          host: scp.domeneshop.no
+          username: tcarisland
           password: ${{ secrets.TCARISLAND_SFTP_PASSWD }}
           port: 22
-          source: "ThorTypeFilter.glyphsFilter.zip"
+          source: ThorTypeFilter.glyphsFilter.zip
           target: ~/www/thortype
 
 
