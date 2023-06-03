@@ -5,6 +5,8 @@ jobs:
   build_plugin:
     name: Build Plugin
     runs-on: macos-latest
+    permissions:
+      contents: write
 
     steps:
       - uses: actions/checkout@v2
