@@ -1,5 +1,5 @@
 name: MacOS Workflow
-on: [workflow_dispatch]
+on: [workflow_dispatch, push]
 
 jobs:
   build_plugin:
@@ -9,4 +9,8 @@ jobs:
     steps:
       - name: Run compile script
         run: ls .
+      
+    steps:
+      - name: PWD
+        run: pwd
 
