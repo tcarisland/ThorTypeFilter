@@ -33,13 +33,12 @@ class FilterHelper():
 		return layer
 		
 	@objc.python_method
-	def splitAndHatch(self, sourceLayer, yInitial, theta, width):
+	def splitAndHatch(self, sourceLayer, yInitial, theta, width, hatchStroke, hatchStep):
 		layer = copy.deepcopy(sourceLayer)
 		layer.cutBetweenPoints(NSPoint(0, yInitial), NSPoint(width, self.getAngleEndCoordinates(width, yInitial, theta)))
 		lower = []
 		upper = []
 		errormargin = 1
-		print("running removeUpper " + str(len(layer.shapes)))
 		for myShape in layer.shapes:			
 			isBelow = True
 			for node in myShape.nodes:
@@ -47,22 +46,21 @@ class FilterHelper():
 				if (node.position.y - errormargin) >= y_final:
 					isBelow = False
 			if isBelow:
-				print("adding shape : " + str(myShape))
 				lower.append(myShape)
 			else:
 				upper.append(myShape)
 		layerCopy = copy.deepcopy(layer)
 		layerCopy.shapes = lower
-		lower = self.hatchLayer(layerCopy, theta)
+		lower = self.hatchLayer(layerCopy, theta, hatchStroke, hatchStep)
 		layer.shapes = lower + upper
 		return layer
 
 	@objc.python_method
-	def hatchLayer(self, layer, theta):
+	def hatchLayer(self, layer, theta, hatchStroke, hatchStep):
 		HatchOutlineFilter = NSClassFromString("HatchOutlineFilter")
-		HatchOutlineFilter.hatchLayer_origin_stepWidth_angle_offset_checkSelection_shadowLayer_(layer, (10, 10), 20, theta, 0, False, None)
+		HatchOutlineFilter.hatchLayer_origin_stepWidth_angle_offset_checkSelection_shadowLayer_(layer, (10, 10), hatchStep, theta, 0, False, None)
 		for myShape in layer.shapes:
-			myShape.setAttribute_forKey_(10, "strokeWidth")
+			myShape.setAttribute_forKey_(hatchStroke, "strokeWidth")
 			myShape.setAttribute_forKey_(2, "lineCapEnd")
 			myShape.setAttribute_forKey_(2, "lineCapStart")
 		return layer.shapes

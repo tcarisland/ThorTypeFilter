@@ -35,8 +35,12 @@ class ThorTypeFilter(FilterWithDialog):
 	# The NSView object from the User Interface. Keep this here!
 	dialog = objc.IBOutlet()
 	# Text field in dialog
-	myTextField = objc.IBOutlet()
-	myOtherTextField = objc.IBOutlet()
+	strokeWidthTextField = objc.IBOutlet()
+	insetWidthTextField = objc.IBOutlet()
+	hatchAngleTextField = objc.IBOutlet()
+	hatchStepTextField = objc.IBOutlet()
+	hatchStartYTextField = objc.IBOutlet()
+	hatchStrokeTextField = objc.IBOutlet()
 
 	@objc.python_method
 	def settings(self):
@@ -65,16 +69,24 @@ class ThorTypeFilter(FilterWithDialog):
 		# Set default value
 		self.registerDefaults()
 		# Set value of text field
-		self.myTextField.setStringValue_(self.pref('strokeWidth'))
-		self.myOtherTextField.setStringValue_(self.pref('insetWidth'))
+		self.strokeWidthTextField.setStringValue_(self.pref('strokeWidth'))
+		self.insetWidthTextField.setStringValue_(self.pref('insetWidth'))
+		self.hatchAngleTextField.setStringValue_(self.pref('hatchAngle'))
+		self.hatchStepTextField.setStringValue_(self.pref('hatchStep'))
+		self.hatchStartYTextField.setStringValue_(self.pref('hatchStartY'))
+		self.hatchStrokeTextField.setStringValue_(self.pref('hatchStroke'))
 		# Set focus to text field
-		self.myTextField.becomeFirstResponder()
+		self.strokeWidthTextField.becomeFirstResponder()
 		self.update()
 
 	@objc.python_method
 	def registerDefaults(self, sender=None):
 		Glyphs.registerDefault(self.domain('strokeWidth'), 10.0)
 		Glyphs.registerDefault(self.domain('insetWidth'), 30.0)
+		Glyphs.registerDefault(self.domain('hatchAngle'), 45.0)
+		Glyphs.registerDefault(self.domain('hatchStep'), 20.0)
+		Glyphs.registerDefault(self.domain('hatchStartY'), 189.0)
+		Glyphs.registerDefault(self.domain('hatchStroke'), 10.0)
 
 	@objc.python_method
 	def domain(self, prefName):
@@ -102,17 +114,17 @@ class ThorTypeFilter(FilterWithDialog):
 		self.update()
 
 	@objc.IBAction
-	def setHatchStep( self, sender):
+	def setHatchStep_( self, sender):
 		Glyphs.defaults[self.domain('hatchStep')] = sender.floatValue()
 		self.update()
 
 	@objc.IBAction
-	def setHatchStartY( self, sender):
+	def setHatchStartY_( self, sender):
 		Glyphs.defaults[self.domain('hatchStartY')] = sender.floatValue()
 		self.update()
 
 	@objc.IBAction
-	def setHatchStroke( self, sender):
+	def setHatchStroke_( self, sender):
 		Glyphs.defaults[self.domain('hatchStroke')] = sender.floatValue()
 		self.update()
 
@@ -135,14 +147,17 @@ class ThorTypeFilter(FilterWithDialog):
 		else: 
 			strokeWidth = float(self.pref('strokeWidth'))
 			insetWidth = float(self.pref('insetWidth'))
-			strokeWidth = float(self.pref('hatchAngle'))
-			insetWidth = float(self.pref('hatchStep'))
-			strokeWidth = float(self.pref('hatchStartY'))
-			insetWidth = float(self.pref('hatchStroke'))
+			hatchAngle = float(self.pref('hatchAngle'))
+			hatchStep = float(self.pref('hatchStep'))
+			hatchStartY = float(self.pref('hatchStartY'))
+			hatchStroke = float(self.pref('hatchStroke'))
+		
+		print("outlineStokeWidth " + str(strokeWidth))
+		print("insetWidth " + str(insetWidth))
 		filterHelper = FilterHelper(outlineStrokeWidth=strokeWidth, insetWidth=insetWidth, thisLayer=layer)
 		outlineLayer = filterHelper.createOutlineGlyphCopy(layer)
 		insetLayer = filterHelper.createInsetGlyphCopy(layer)
-		splitLayer = filterHelper.splitAndHatch(insetLayer, 189, 45, 500)
+		splitLayer = filterHelper.splitAndHatch(insetLayer, hatchStartY, hatchAngle, 500, hatchStroke, hatchStep)
 
 		shadowEffect = ShadowEffect(outlineStrokeWidth=strokeWidth)
 		shadowBaseLayer = shadowEffect.prepareOutlineForShadow(layer)
@@ -152,7 +167,7 @@ class ThorTypeFilter(FilterWithDialog):
 	@objc.python_method
 	def generateCustomParameter( self ):
 		self.registerDefaults()
-		return "%s; strokeWidth:%s insetWidth:%s" % (
+		return "%s; strokeWidth:%s insetWidth:%s hatchAngle:%s hatchStep:%s hatchStartY:%s hatchStroke:%s" % (
 			self.__class__.__name__,
 			self.pref('strokeWidth'),
 			self.pref('insetWidth'),
