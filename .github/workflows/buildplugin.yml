@@ -35,9 +35,8 @@ jobs:
         with:
           host: scp.domeneshop.no
           username: tcarisland
-          password: ${{ secrets.TCARISLAND_SFTP_PASSWD }}
-          port: 22
+          password: ${{secrets.TCARISLAND_SFTP_PASSWD}}
           source: ThorTypeFilter.glyphsFilter.zip
-          target: ~/www/thortype
+          target: /home/6/t/tcarisland/www/thortype
 
 
