@@ -131,6 +131,7 @@ class ThorTypeFilter(FilterWithDialog):
 	# Actual filter
 	@objc.python_method
 	def filter(self, layer, inEditView, customParameters):
+		layer.removeOverlap()
 		if len(customParameters) > 0:
 			if 'strokeWidth' in customParameters:
 				print("strokeWidth " + customParameters['strokeWidth'])
@@ -161,8 +162,10 @@ class ThorTypeFilter(FilterWithDialog):
 
 		shadowEffect = ShadowEffect(outlineStrokeWidth=strokeWidth)
 		shadowBaseLayer = shadowEffect.prepareOutlineForShadow(layer)
+		shadowLayer = shadowEffect.filter(shadowBaseLayer)
 
-		layer.shapes = outlineLayer.shapes + splitLayer.shapes + shadowEffect.filter(shadowBaseLayer)
+		layer.shapes = outlineLayer.shapes + splitLayer.shapes + shadowLayer.shapes.values()
+		layer.removeOverlap()
 	
 	@objc.python_method
 	def generateCustomParameter( self ):
