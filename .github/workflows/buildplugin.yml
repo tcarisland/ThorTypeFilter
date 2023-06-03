@@ -8,7 +8,7 @@ jobs:
 
     steps:
       - name: Run compile script
-        run: ls .
+        run: echo `ls .`
 
       - name: PWD
         run: pwd
