@@ -9,4 +9,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run compile script
-        run: ./compile.sh
+        run: ./compile.sh --verbose
