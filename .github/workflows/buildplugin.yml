@@ -8,7 +8,7 @@ jobs:
 
     steps:
       - name: Run compile script
-        run: echo `ls .`
+        run: ls ${{ github.workspace }}
 
       - name: PWD
         run: pwd
