@@ -19,15 +19,6 @@ class FilterHelper():
 			newPath.setAttribute_forKey_(self.outlineStrokeWidth, "strokeWidth")
 		layer.flattenOutlinesRemoveOverlap_origHints_secondaryPath_extraHandles_error_(False,None,None,None,None)
 		return layer
-	
-	def prepareOutlineForShadow(self, sourceLayer):
-		layer = copy.deepcopy(sourceLayer)
-		for newPath in layer.shapes:
-			newPath.setAttribute_forKey_(self.outlineStrokeWidth, "strokeWidth")
-		layer.flattenOutlinesRemoveOverlap_origHints_secondaryPath_extraHandles_error_(False,None,None,None,None)
-		layer.shapes = layer.shapes + sourceLayer.shapes
-		layer.removeOverlap()
-		return layer
 		
 	@objc.python_method
 	def createInsetGlyphCopy(self, sourceLayer):

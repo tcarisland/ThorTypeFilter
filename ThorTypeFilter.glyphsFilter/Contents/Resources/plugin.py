@@ -21,6 +21,7 @@ from GlyphsApp import *
 from GlyphsApp.plugins import *
 from Foundation import NSClassFromString
 from filterutils import FilterHelper
+from shadoweffect import ShadowEffect
 from effects import ThorTypeEffects
 
 class ThorTypeFilter(FilterWithDialog):
@@ -111,9 +112,10 @@ class ThorTypeFilter(FilterWithDialog):
 		insetLayer = filterHelper.createInsetGlyphCopy(layer)
 		splitLayer = filterHelper.splitAndHatch(insetLayer, 189, 45, 500)
 
-		shadowBaseLayer = filterHelper.prepareOutlineForShadow(layer)
+		shadowEffect = ShadowEffect(outlineStrokeWidth=strokeWidth)
+		shadowBaseLayer = shadowEffect.prepareOutlineForShadow(layer)
 
-		layer.shapes = outlineLayer.shapes + splitLayer.shapes
+		layer.shapes = outlineLayer.shapes + splitLayer.shapes + shadowEffect.filter(shadowBaseLayer)
 	
 	@objc.python_method
 	def generateCustomParameter( self ):
