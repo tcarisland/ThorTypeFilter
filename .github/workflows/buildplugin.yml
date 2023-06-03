@@ -9,7 +9,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run compile script
-        run: ls ${{ github.workspace }}
-
-      - name: PWD
-        run: pwd
+        run: ./compile.sh
