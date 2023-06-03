@@ -8,11 +8,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: stefanzweifel/git-auto-commit-action@v4
-
       - name: Run compile script
         run: find . -name "*.xib" -type f | awk '{sub(/.xib/,"");print}' | xargs -I % ibtool --compile %.nib %.xib
         working-directory: ./ThorTypeFilter.glyphsFilter/Contents/Resources
-      
+      - uses: stefanzweifel/git-auto-commit-action@v4
+      - name: list results
+        run: echo $?
+
 
 
