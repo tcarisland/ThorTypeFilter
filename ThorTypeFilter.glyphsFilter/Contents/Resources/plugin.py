@@ -96,17 +96,49 @@ class ThorTypeFilter(FilterWithDialog):
 		Glyphs.defaults[self.domain('insetWidth')] = sender.floatValue()
 		self.update()
 
+	@objc.IBAction
+	def setHatchAngle_( self, sender):
+		Glyphs.defaults[self.domain('hatchAngle')] = sender.floatValue()
+		self.update()
+
+	@objc.IBAction
+	def setHatchStep( self, sender):
+		Glyphs.defaults[self.domain('hatchStep')] = sender.floatValue()
+		self.update()
+
+	@objc.IBAction
+	def setHatchStartY( self, sender):
+		Glyphs.defaults[self.domain('hatchStartY')] = sender.floatValue()
+		self.update()
+
+	@objc.IBAction
+	def setHatchStroke( self, sender):
+		Glyphs.defaults[self.domain('hatchStroke')] = sender.floatValue()
+		self.update()
+
 	# Actual filter
 	@objc.python_method
 	def filter(self, layer, inEditView, customParameters):
 		if len(customParameters) > 0:
 			if 'strokeWidth' in customParameters:
-				print("FIRST VALUE " + customParameters['strokeWidth'])
+				print("strokeWidth " + customParameters['strokeWidth'])
 			if 'insetWidth' in customParameters:
-				print("SECOND VALUE" + customParameters['insetWidth'])
+				print("insetWidth " + customParameters['insetWidth'])
+			if 'hatchAngle' in customParameters:
+				print("hatchAngle " + customParameters['hatchAngle'])
+			if 'hatchStep' in customParameters:
+				print("hatchStep " + customParameters['hatchStep'])
+			if 'hatchStartY' in customParameters:
+				print("hatchStartY " + customParameters['hatchStartY'])
+			if 'hatchStroke' in customParameters:
+				print("hatchStroke " + customParameters['hatchStroke'])
 		else: 
 			strokeWidth = float(self.pref('strokeWidth'))
 			insetWidth = float(self.pref('insetWidth'))
+			strokeWidth = float(self.pref('hatchAngle'))
+			insetWidth = float(self.pref('hatchStep'))
+			strokeWidth = float(self.pref('hatchStartY'))
+			insetWidth = float(self.pref('hatchStroke'))
 		filterHelper = FilterHelper(outlineStrokeWidth=strokeWidth, insetWidth=insetWidth, thisLayer=layer)
 		outlineLayer = filterHelper.createOutlineGlyphCopy(layer)
 		insetLayer = filterHelper.createInsetGlyphCopy(layer)
@@ -124,6 +156,10 @@ class ThorTypeFilter(FilterWithDialog):
 			self.__class__.__name__,
 			self.pref('strokeWidth'),
 			self.pref('insetWidth'),
+			self.pref('hatchAngle'),
+			self.pref('hatchStep'),
+			self.pref('hatchStartY'),
+			self.pref('hatchStroke'),
 			)
 
 	@objc.python_method
