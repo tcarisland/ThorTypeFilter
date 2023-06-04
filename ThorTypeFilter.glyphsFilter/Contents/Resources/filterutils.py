@@ -2,7 +2,7 @@ import copy
 import math
 import objc
 from Foundation import NSPoint
-from Foundation import NSClassFromString
+from effects import ThorTypeEffects
 
 class FilterHelper():
 
@@ -51,19 +51,11 @@ class FilterHelper():
 				upper.append(myShape)
 		layerCopy = copy.deepcopy(layer)
 		layerCopy.shapes = lower
-		lower = self.hatchLayer(layerCopy, theta, hatchStroke, hatchStep)
-		layer.shapes = lower + upper
-		return layer
-
-	@objc.python_method
-	def hatchLayer(self, layer, theta, hatchStroke, hatchStep):
-		HatchOutlineFilter = NSClassFromString("HatchOutlineFilter")
-		HatchOutlineFilter.hatchLayer_origin_stepWidth_angle_offset_checkSelection_shadowLayer_(layer, (10, 10), hatchStep, theta, 0, False, None)
-		for myShape in layer.shapes:
-			myShape.setAttribute_forKey_(hatchStroke, "strokeWidth")
-			myShape.setAttribute_forKey_(2, "lineCapEnd")
-			myShape.setAttribute_forKey_(2, "lineCapStart")
-		return layer.shapes
+		effects = ThorTypeEffects()
+		lowerLayer = effects.hatchLayer(layerCopy, theta, hatchStroke, hatchStep)
+		upperLayer = copy.deepcopy(layer)
+		upperLayer.shapes = upper
+		return [lowerLayer, upperLayer]
 				
 	@objc.python_method
 	def getAngleEndCoordinates(self, x, y, theta):

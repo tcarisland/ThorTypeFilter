@@ -22,7 +22,7 @@ from GlyphsApp.plugins import *
 from Foundation import NSClassFromString
 from filterutils import FilterHelper
 from shadoweffect import ShadowEffect
-from effects import ThorTypeEffects
+from circleeffect import CircleEffect
 
 class ThorTypeFilter(FilterWithDialog):
 
@@ -43,6 +43,13 @@ class ThorTypeFilter(FilterWithDialog):
 	hatchStrokeTextField = objc.IBOutlet()
 	shadowOffsetTextField = objc.IBOutlet()
 	shadowAngleTextField = objc.IBOutlet()
+	hatchOriginTextField = objc.IBOutlet()
+	circlesAngleTextField = objc.IBOutlet()
+	circlesDistanceTextField = objc.IBOutlet()
+	circlesEndTextField = objc.IBOutlet()
+	circlesOriginTextField = objc.IBOutlet()
+	circlesRadiusTextField = objc.IBOutlet()
+	circlesStartTextField = objc.IBOutlet()
 
 	@objc.python_method
 	def settings(self):
@@ -79,6 +86,13 @@ class ThorTypeFilter(FilterWithDialog):
 		self.hatchStrokeTextField.setStringValue_(self.pref('hatchStroke'))
 		self.shadowOffsetTextField.setStringValue_(self.pref('shadowOffset'))
 		self.shadowAngleTextField.setStringValue_(self.pref('shadowAngle'))
+		self.hatchOriginTextField.setStringValue_(self.pref('hatchOrigin'))
+		self.circlesAngleTextField.setStringValue_(self.pref('circlesAngle'))
+		self.circlesDistanceTextField.setStringValue_(self.pref('circlesDistance'))
+		self.circlesEndTextField.setStringValue_(self.pref('circlesEnd'))
+		self.circlesOriginTextField.setStringValue_(self.pref('circlesOrigin'))
+		self.circlesRadiusTextField.setStringValue_(self.pref('circlesRadius'))
+		self.circlesStartTextField.setStringValue_(self.pref('circlesStart'))
 		# Set focus to text field
 		self.strokeWidthTextField.becomeFirstResponder()
 		self.update()
@@ -93,6 +107,14 @@ class ThorTypeFilter(FilterWithDialog):
 		Glyphs.registerDefault(self.domain('hatchStroke'), 10.0)
 		Glyphs.registerDefault(self.domain('shadowOffset'), 45.0)
 		Glyphs.registerDefault(self.domain('shadowAngle'), 315.0)
+		Glyphs.registerDefault(self.domain('hatchOrigin'), 10.0)
+		Glyphs.registerDefault(self.domain('circlesAngle'), 10.0)
+		Glyphs.registerDefault(self.domain('circlesDistance'), 10.0)
+		Glyphs.registerDefault(self.domain('circlesEnd'), 10.0)
+		Glyphs.registerDefault(self.domain('circlesOrigin'), 10.0)
+		Glyphs.registerDefault(self.domain('circlesRadius'), 10.0)
+		Glyphs.registerDefault(self.domain('circlesStart'), 10.0)
+
 
 	@objc.python_method
 	def domain(self, prefName):
@@ -144,6 +166,42 @@ class ThorTypeFilter(FilterWithDialog):
 		Glyphs.defaults[self.domain('shadowAngle')] = sender.floatValue()
 		self.update()
 
+	@objc.IBAction
+	def setHatchOrigin_( self, sender):
+		Glyphs.defaults[self.domain('hatchOrigin')] = sender.floatValue()
+		self.update()
+
+
+	@objc.IBAction
+	def setCirclesAngle_( self, sender):
+		Glyphs.defaults[self.domain('circlesAngle')] = sender.floatValue()
+		self.update()
+
+	@objc.IBAction
+	def setCirclesDistance_( self, sender):
+		Glyphs.defaults[self.domain('circlesDistance')] = sender.floatValue()
+		self.update()
+
+	@objc.IBAction
+	def setCirclesEnd_( self, sender):
+		Glyphs.defaults[self.domain('circlesEnd')] = sender.floatValue()
+		self.update()
+
+	@objc.IBAction
+	def setCirclesOrigin_( self, sender):
+		Glyphs.defaults[self.domain('circlesOrigin')] = sender.floatValue()
+		self.update()
+
+	@objc.IBAction
+	def setCirclesRadius_( self, sender):
+		Glyphs.defaults[self.domain('circlesRadius')] = sender.floatValue()
+		self.update()
+
+	@objc.IBAction
+	def setCirclesStart_( self, sender):
+		Glyphs.defaults[self.domain('circlesStart')] = sender.floatValue()
+		self.update()
+
 	# Actual filter
 	@objc.python_method
 	def filter(self, layer, inEditView, customParameters):
@@ -165,6 +223,20 @@ class ThorTypeFilter(FilterWithDialog):
 				print("shadowOffset " + customParameters['shadowOffset'])
 			if 'shadowAngle' in customParameters:
 				print("shadowAngle " + customParameters['shadowAngle'])
+			if 'hatchOrigin' in customParameters:
+				print("hatchOrigin " + customParameters['hatchOrigin'])
+			if 'circlesAngle' in customParameters:
+				print("circlesAngle " + customParameters['circlesAngle'])
+			if 'circlesDistance' in customParameters:
+				print("circlesDistance " + customParameters['circlesDistance'])
+			if 'circlesEnd' in customParameters:
+				print("circlesEnd " + customParameters['circlesEnd'])
+			if 'circlesOrigin' in customParameters:
+				print("circlesOrigin " + customParameters['circlesOrigin'])
+			if 'circlesRadius' in customParameters:
+				print("circlesRadius " + customParameters['circlesRadius'])
+			if 'circlesStart' in customParameters:
+				print("circlesStart " + customParameters['circlesStart'])
 		else: 
 			strokeWidth = float(self.pref('strokeWidth'))
 			insetWidth = float(self.pref('insetWidth'))
@@ -172,27 +244,34 @@ class ThorTypeFilter(FilterWithDialog):
 			hatchStep = float(self.pref('hatchStep'))
 			hatchStartY = float(self.pref('hatchStartY'))
 			hatchStroke = float(self.pref('hatchStroke'))
+			hatchOrigin = float(self.pref('hatchOrigin'))
 			shadowOffset = float(self.pref('shadowOffset'))
 			shadowAngle = float(self.pref('shadowAngle'))
-		
-		print("outlineStokeWidth " + str(strokeWidth))
-		print("insetWidth " + str(insetWidth))
+			circlesAngle = float(self.pref('circlesAngle'))
+			circlesDistance = float(self.pref('circlesDistance'))
+			circlesEnd = float(self.pref('circlesEnd'))
+			circlesOrigin = float(self.pref('circlesOrigin'))
+			circlesRadius = float(self.pref('circlesRadius'))
+			circlesStart = float(self.pref('circlesStart'))
+
 		filterHelper = FilterHelper(outlineStrokeWidth=strokeWidth, insetWidth=insetWidth, thisLayer=layer)
 		outlineLayer = filterHelper.createOutlineGlyphCopy(layer)
 		insetLayer = filterHelper.createInsetGlyphCopy(layer)
-		splitLayer = filterHelper.splitAndHatch(insetLayer, hatchStartY, hatchAngle, 500, hatchStroke, hatchStep)
+		splitLayers = filterHelper.splitAndHatch(insetLayer, hatchStartY, hatchAngle, 500, hatchStroke, hatchStep)
+
+		circleEffect = CircleEffect()
+		circleLayer = circleEffect.drawCircles(splitLayers[1])
 
 		shadowEffect = ShadowEffect(outlineStrokeWidth=strokeWidth)
 		shadowBaseLayer = shadowEffect.prepareOutlineForShadow(layer)
 		shadowLayer = shadowEffect.applyShadow(shadowBaseLayer, shadowOffset, shadowAngle)
 
-		layer.shapes = outlineLayer.shapes + splitLayer.shapes + shadowLayer.shapes.values()
-		layer.removeOverlap()
+		layer.shapes = outlineLayer.shapes + splitLayers[0].shapes.values() + splitLayers[1].shapes.values() + shadowLayer.shapes.values() + circleLayer.shapes.values()
 	
 	@objc.python_method
 	def generateCustomParameter( self ):
 		self.registerDefaults()
-		return "%s; strokeWidth:%s insetWidth:%s hatchAngle:%s hatchStep:%s hatchStartY:%s hatchStroke:%s shadowOffset:%s shadowAngle:%s" % (
+		return "%s; strokeWidth:%s insetWidth:%s hatchAngle:%s hatchStep:%s hatchStartY:%s hatchStroke:%s shadowOffset:%s shadowAngle:%s hatchOrigin:%s circlesAngle:%s circlesDistance:%s circlesEnd:%s circlesOrigin:%s circlesRadius:%s circlesStart:%s" % (
 			self.__class__.__name__,
 			self.pref('strokeWidth'),
 			self.pref('insetWidth'),
@@ -202,6 +281,13 @@ class ThorTypeFilter(FilterWithDialog):
 			self.pref('hatchStroke'),
 			self.pref('shadowOffset'),
 			self.pref('shadowAngle'),
+			self.pref('hatchOrigin'),
+			self.pref('circlesAngle'),
+			self.pref('circlesDistance'),
+			self.pref('circlesEnd'),
+			self.pref('circlesOrigin'),
+			self.pref('circlesRadius'),
+			self.pref('circlesStart'),
 			)
 
 	@objc.python_method
