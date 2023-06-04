@@ -1,63 +1,33 @@
+import objc
+from GlyphsApp import *
+from GlyphsApp.plugins import *
 from Foundation import NSMakePoint
 
-def drawCircle(origin, radius):
-	circle = GSPath()
-	half = (radius * 0.55)
-	at = [0, half, radius, -half, -radius]
-	nodes = [None] * 12
+class CircleEffect():
 
-	nodes[0] = GSNode()
-	nodes[0].type = "offcurve"
-	nodes[0].position = NSMakePoint(origin[0] + at[1], origin[1] + at[4])
+	def __init__(self) -> None:
+		super().__init__()
 
-	nodes[1] = GSNode()
-	nodes[1].type = "offcurve"
-	nodes[1].position = NSMakePoint(origin[0] + at[2], origin[1] + at[3])
+	@objc.python_method
+	def drawCircle(origin, radius):
+		circle = GSPath()
+		half = radius * 0.55
+		at = [0, half, radius, -half, -radius]
+		table = [(1, 4), (2, 3), (2, 0), (2, 1), (1, 2), (0, 2), (3, 2), (4, 1), (4, 0), (4, 3), (3, 4), (0, 4)]
+		nodes = []
 
-	nodes[2] = GSNode()
-	nodes[2].type = "curve"
-	nodes[2].position = NSMakePoint(origin[0] + at[2], origin[1] + at[0])
-	nodes[2].smooth = True
+		for i, (x_index, y_index) in enumerate(table):
+			node = GSNode()
 
-	nodes[3] = GSNode()
-	nodes[3].type = "offcurve"
-	nodes[3].position = NSMakePoint(origin[0] + at[2], origin[1] + at[1])
+			if (i + 1) % 3 == 0:
+				node.type = "curve"
+				node.smooth = True
+			else:
+				node.type = "offcurve"
 
-	nodes[4] = GSNode()
-	nodes[4].type = "offcurve"
-	nodes[4].position = NSMakePoint(origin[0] + at[1], origin[1] + at[2])
+			node.position = NSMakePoint(origin[0] + at[x_index], origin[1] + at[y_index])
+			nodes.append(node)
 
-	nodes[5] = GSNode()
-	nodes[5].type = "curve"
-	nodes[5].position = NSMakePoint(origin[0] + at[0], origin[1] + at[2])
-	nodes[5].smooth = True
-
-	nodes[6] = GSNode()
-	nodes[6].type = "offcurve"
-	nodes[6].position = NSMakePoint(origin[0] + at[3], origin[1] + at[2])
-
-	nodes[7] = GSNode()
-	nodes[7].type = "offcurve"
-	nodes[7].position = NSMakePoint(origin[0] + at[4], origin[1] + at[1])
-
-	nodes[8] = GSNode()
-	nodes[8].type = "curve"
-	nodes[8].position = NSMakePoint(origin[0] + at[4], origin[1] + at[0])
-	nodes[8].smooth = True
-
-	nodes[9] = GSNode()
-	nodes[9].type = "offcurve"
-	nodes[9].position = NSMakePoint(origin[0] + at[4], origin[1] + at[3])
-
-	nodes[10] = GSNode()
-	nodes[10].type = "offcurve"
-	nodes[10].position = NSMakePoint(origin[0] + at[3], origin[1] + at[4])
-
-	nodes[11] = GSNode()
-	nodes[11].type = "curve"
-	nodes[11].position = NSMakePoint(origin[0] + at[0], origin[1] + at[4])
-	nodes[11].smooth = True
-
-	circle.nodes = nodes
-	circle.closed = True
-	return circle
+		circle.nodes = nodes
+		circle.closed = True
+		return circle
