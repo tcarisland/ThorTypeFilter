@@ -41,6 +41,8 @@ class ThorTypeFilter(FilterWithDialog):
 	hatchStepTextField = objc.IBOutlet()
 	hatchStartYTextField = objc.IBOutlet()
 	hatchStrokeTextField = objc.IBOutlet()
+	shadowOffsetTextField = objc.IBOutlet()
+	shadowAngleTextField = objc.IBOutlet()
 
 	@objc.python_method
 	def settings(self):
@@ -75,6 +77,8 @@ class ThorTypeFilter(FilterWithDialog):
 		self.hatchStepTextField.setStringValue_(self.pref('hatchStep'))
 		self.hatchStartYTextField.setStringValue_(self.pref('hatchStartY'))
 		self.hatchStrokeTextField.setStringValue_(self.pref('hatchStroke'))
+		self.shadowOffsetTextField.setStringValue_(self.pref('shadowOffset'))
+		self.shadowAngleTextField.setStringValue_(self.pref('shadowAngle'))
 		# Set focus to text field
 		self.strokeWidthTextField.becomeFirstResponder()
 		self.update()
@@ -87,6 +91,8 @@ class ThorTypeFilter(FilterWithDialog):
 		Glyphs.registerDefault(self.domain('hatchStep'), 20.0)
 		Glyphs.registerDefault(self.domain('hatchStartY'), 189.0)
 		Glyphs.registerDefault(self.domain('hatchStroke'), 10.0)
+		Glyphs.registerDefault(self.domain('shadowOffset'), 45.0)
+		Glyphs.registerDefault(self.domain('shadowAngle'), 315.0)
 
 	@objc.python_method
 	def domain(self, prefName):
@@ -128,6 +134,16 @@ class ThorTypeFilter(FilterWithDialog):
 		Glyphs.defaults[self.domain('hatchStroke')] = sender.floatValue()
 		self.update()
 
+	@objc.IBAction
+	def setShadowOffset_( self, sender):
+		Glyphs.defaults[self.domain('shadowOffset')] = sender.floatValue()
+		self.update()
+		
+	@objc.IBAction
+	def setShadowAngle_( self, sender):
+		Glyphs.defaults[self.domain('shadowAngle')] = sender.floatValue()
+		self.update()
+
 	# Actual filter
 	@objc.python_method
 	def filter(self, layer, inEditView, customParameters):
@@ -145,6 +161,10 @@ class ThorTypeFilter(FilterWithDialog):
 				print("hatchStartY " + customParameters['hatchStartY'])
 			if 'hatchStroke' in customParameters:
 				print("hatchStroke " + customParameters['hatchStroke'])
+			if 'shadowOffset' in customParameters:
+				print("shadowOffset " + customParameters['shadowOffset'])
+			if 'shadowAngle' in customParameters:
+				print("shadowAngle " + customParameters['shadowAngle'])
 		else: 
 			strokeWidth = float(self.pref('strokeWidth'))
 			insetWidth = float(self.pref('insetWidth'))
@@ -152,6 +172,8 @@ class ThorTypeFilter(FilterWithDialog):
 			hatchStep = float(self.pref('hatchStep'))
 			hatchStartY = float(self.pref('hatchStartY'))
 			hatchStroke = float(self.pref('hatchStroke'))
+			shadowOffset = float(self.pref('shadowOffset'))
+			shadowAngle = float(self.pref('shadowAngle'))
 		
 		print("outlineStokeWidth " + str(strokeWidth))
 		print("insetWidth " + str(insetWidth))
@@ -162,7 +184,7 @@ class ThorTypeFilter(FilterWithDialog):
 
 		shadowEffect = ShadowEffect(outlineStrokeWidth=strokeWidth)
 		shadowBaseLayer = shadowEffect.prepareOutlineForShadow(layer)
-		shadowLayer = shadowEffect.filter(shadowBaseLayer)
+		shadowLayer = shadowEffect.applyShadow(shadowBaseLayer, shadowOffset, shadowAngle)
 
 		layer.shapes = outlineLayer.shapes + splitLayer.shapes + shadowLayer.shapes.values()
 		layer.removeOverlap()
@@ -170,7 +192,7 @@ class ThorTypeFilter(FilterWithDialog):
 	@objc.python_method
 	def generateCustomParameter( self ):
 		self.registerDefaults()
-		return "%s; strokeWidth:%s insetWidth:%s hatchAngle:%s hatchStep:%s hatchStartY:%s hatchStroke:%s" % (
+		return "%s; strokeWidth:%s insetWidth:%s hatchAngle:%s hatchStep:%s hatchStartY:%s hatchStroke:%s shadowOffset:%s shadowAngle:%s" % (
 			self.__class__.__name__,
 			self.pref('strokeWidth'),
 			self.pref('insetWidth'),
@@ -178,6 +200,8 @@ class ThorTypeFilter(FilterWithDialog):
 			self.pref('hatchStep'),
 			self.pref('hatchStartY'),
 			self.pref('hatchStroke'),
+			self.pref('shadowOffset'),
+			self.pref('shadowAngle'),
 			)
 
 	@objc.python_method

@@ -31,9 +31,9 @@ class ShadowEffect():
 
 	# Actual filter
 	@objc.python_method
-	def filter(self, thisLayer):
-		self.extrudeFilter.setOffset_(60)
-		self.extrudeFilter.setAngle_(-45)
+	def applyShadow(self, thisLayer, shadowOffset, shadowAngle):
+		self.extrudeFilter.setOffset_(shadowOffset)
+		self.extrudeFilter.setAngle_(shadowAngle)
 		layer = copy.deepcopy(thisLayer)
 		self.extrudeFilter.processLayer_(layer)
 		return layer
