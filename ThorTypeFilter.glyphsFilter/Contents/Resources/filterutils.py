@@ -33,7 +33,7 @@ class FilterHelper():
 		return layer
 		
 	@objc.python_method
-	def splitAndHatch(self, sourceLayer, yInitial, theta, width, hatchStroke, hatchStep):
+	def splitAndHatch(self, sourceLayer, yInitial, theta, width, hatchStroke, hatchStep, hatchOrigin):
 		layer = copy.deepcopy(sourceLayer)
 		layer.cutBetweenPoints(NSPoint(0, yInitial), NSPoint(width, self.getAngleEndCoordinates(width, yInitial, theta)))
 		lower = []

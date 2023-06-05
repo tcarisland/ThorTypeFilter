@@ -257,7 +257,7 @@ class ThorTypeFilter(FilterWithDialog):
 		filterHelper = FilterHelper(outlineStrokeWidth=strokeWidth, insetWidth=insetWidth, thisLayer=layer)
 		outlineLayer = filterHelper.createOutlineGlyphCopy(layer)
 		insetLayer = filterHelper.createInsetGlyphCopy(layer)
-		splitLayers = filterHelper.splitAndHatch(insetLayer, hatchStartY, hatchAngle, 500, hatchStroke, hatchStep)
+		splitLayers = filterHelper.splitAndHatch(insetLayer, hatchStartY, hatchAngle, 500, hatchStroke, hatchStep, hatchOrigin)
 
 		circleEffect = CircleEffect()
 		circleLayer = circleEffect.drawCircles(splitLayers[1])
