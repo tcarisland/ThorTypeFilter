@@ -7,13 +7,13 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="____PluginClassName____">
             <connections>
-                <outlet property="dialog" destination="1" id="kzC-yw-bol"/>
                 <outlet property="circlesAngleTextField" destination="LmL-Uj-F9U" id="zWe-by-PDL"/>
                 <outlet property="circlesDistanceTextField" destination="Nxe-c9-KF2" id="zWe-by-PDK"/>
                 <outlet property="circlesEndTextField" destination="Wwx-cQ-Y6y" id="zWe-by-PDN"/>
                 <outlet property="circlesOriginTextField" destination="P4K-Y5-CDK" id="zWe-by-PDI"/>
                 <outlet property="circlesRadiusTextField" destination="VgH-Ok-7u0" id="zWe-by-PDJ"/>
                 <outlet property="circlesStartTextField" destination="sEb-gi-GgO" id="zWe-by-PDM"/>
+                <outlet property="dialog" destination="1" id="kzC-yw-bol"/>
                 <outlet property="hatchAngleTextField" destination="Azl-Jy-VV9" id="zWe-by-PDB"/>
                 <outlet property="hatchOriginTextField" destination="c7A-lq-cjb" id="zWe-by-PDA"/>
                 <outlet property="hatchStartYTextField" destination="enO-X9-c2m" id="zWe-by-PDC"/>

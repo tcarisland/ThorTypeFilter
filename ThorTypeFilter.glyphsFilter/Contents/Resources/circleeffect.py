@@ -11,14 +11,14 @@ class CircleEffect():
 		super().__init__()
 
 	@objc.python_method
-	def drawCircles(self, originLayer):
+	def drawCircleColumn(self, originLayer, circlesOrigin, circlesRadius, circlesDistance, circlesAngle, circlesStart, circlesEnd):
 		effects = ThorTypeEffects()
-		layer = effects.hatchLayer(copy.deepcopy(originLayer), 180, 0, 50)
+		layer = effects.hatchLayerWithOrigin(copy.deepcopy(originLayer), circlesAngle, 0, circlesDistance, circlesOrigin)
 		shapes = []
-		for myShape in layer.shapes.values()[1:-1]:
+		for myShape in layer.shapes.values()[(int(circlesStart)):-(int(circlesEnd))]:
 			x = round((myShape.nodes[0].position.x + myShape.nodes[1].position.x) / 2, 1)
 			y = round((myShape.nodes[0].position.y + myShape.nodes[1].position.y) / 2, 1)
-			circle = self.drawCircle([x, y], 15)
+			circle = self.drawCircle([x, y], circlesRadius)
 			shapes.append(circle)
 		layer.shapes = shapes
 		return layer

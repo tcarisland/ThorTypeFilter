@@ -108,12 +108,12 @@ class ThorTypeFilter(FilterWithDialog):
 		Glyphs.registerDefault(self.domain('shadowOffset'), 45.0)
 		Glyphs.registerDefault(self.domain('shadowAngle'), 315.0)
 		Glyphs.registerDefault(self.domain('hatchOrigin'), 10.0)
-		Glyphs.registerDefault(self.domain('circlesAngle'), 10.0)
-		Glyphs.registerDefault(self.domain('circlesDistance'), 10.0)
-		Glyphs.registerDefault(self.domain('circlesEnd'), 10.0)
-		Glyphs.registerDefault(self.domain('circlesOrigin'), 10.0)
-		Glyphs.registerDefault(self.domain('circlesRadius'), 10.0)
-		Glyphs.registerDefault(self.domain('circlesStart'), 10.0)
+		Glyphs.registerDefault(self.domain('circlesAngle'), 180.0)
+		Glyphs.registerDefault(self.domain('circlesDistance'), 50.0)
+		Glyphs.registerDefault(self.domain('circlesEnd'), 1)
+		Glyphs.registerDefault(self.domain('circlesOrigin'), 0)
+		Glyphs.registerDefault(self.domain('circlesRadius'), 30)
+		Glyphs.registerDefault(self.domain('circlesStart'), 1)
 
 
 	@objc.python_method
@@ -260,7 +260,7 @@ class ThorTypeFilter(FilterWithDialog):
 		splitLayers = filterHelper.splitAndHatch(insetLayer, hatchStartY, hatchAngle, 500, hatchStroke, hatchStep, hatchOrigin)
 
 		circleEffect = CircleEffect()
-		circleLayer = circleEffect.drawCircles(splitLayers[1])
+		circleLayer = circleEffect.drawCircleColumn(splitLayers[1], circlesOrigin, circlesRadius, circlesDistance, circlesAngle, circlesStart, circlesEnd)
 
 		shadowEffect = ShadowEffect(outlineStrokeWidth=strokeWidth)
 		shadowBaseLayer = shadowEffect.prepareOutlineForShadow(layer)

@@ -52,7 +52,7 @@ class FilterHelper():
 		layerCopy = copy.deepcopy(layer)
 		layerCopy.shapes = lower
 		effects = ThorTypeEffects()
-		lowerLayer = effects.hatchLayer(layerCopy, theta, hatchStroke, hatchStep)
+		lowerLayer = effects.hatchLayerWithOrigin(layerCopy, theta, hatchStroke, hatchStep, hatchOrigin)
 		upperLayer = copy.deepcopy(layer)
 		upperLayer.shapes = upper
 		return [lowerLayer, upperLayer]
