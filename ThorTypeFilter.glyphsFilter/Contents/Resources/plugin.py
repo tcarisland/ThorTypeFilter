@@ -50,6 +50,7 @@ class ThorTypeFilter(FilterWithDialog):
 	circlesOriginTextField = objc.IBOutlet()
 	circlesRadiusTextField = objc.IBOutlet()
 	circlesStartTextField = objc.IBOutlet()
+	circlesCheckbox = objc.IBOutlet()
 
 	@objc.python_method
 	def settings(self):
@@ -92,7 +93,9 @@ class ThorTypeFilter(FilterWithDialog):
 		self.circlesEndTextField.setStringValue_(self.pref('circlesEnd'))
 		self.circlesOriginTextField.setStringValue_(self.pref('circlesOrigin'))
 		self.circlesRadiusTextField.setStringValue_(self.pref('circlesRadius'))
+		self.circlesEndTextField.setStringValue_(self.pref('circlesEnd'))
 		self.circlesStartTextField.setStringValue_(self.pref('circlesStart'))
+		self.circlesCheckbox.setBoolValue(self.pref('circles'))
 		# Set focus to text field
 		self.strokeWidthTextField.becomeFirstResponder()
 		self.update()
@@ -114,6 +117,7 @@ class ThorTypeFilter(FilterWithDialog):
 		Glyphs.registerDefault(self.domain('circlesOrigin'), 0)
 		Glyphs.registerDefault(self.domain('circlesRadius'), 30)
 		Glyphs.registerDefault(self.domain('circlesStart'), 1)
+		Glyphs.registerDefault(self.domain('circles'), True)
 
 
 	@objc.python_method
@@ -202,6 +206,11 @@ class ThorTypeFilter(FilterWithDialog):
 		Glyphs.defaults[self.domain('circlesStart')] = sender.floatValue()
 		self.update()
 
+	@objc.IBAction
+	def setCircles_( self, sender):
+		Glyphs.defaults[self.domain('circles')] = sender.boolValue()
+		self.update()
+
 	# Actual filter
 	@objc.python_method
 	def filter(self, layer, inEditView, customParameters):
@@ -237,6 +246,8 @@ class ThorTypeFilter(FilterWithDialog):
 				print("circlesRadius " + customParameters['circlesRadius'])
 			if 'circlesStart' in customParameters:
 				print("circlesStart " + customParameters['circlesStart'])
+			if 'circles' in customParameters:
+				print("circles " + customParameters['circles'])
 		else: 
 			strokeWidth = float(self.pref('strokeWidth'))
 			insetWidth = float(self.pref('insetWidth'))
@@ -253,6 +264,9 @@ class ThorTypeFilter(FilterWithDialog):
 			circlesOrigin = float(self.pref('circlesOrigin'))
 			circlesRadius = float(self.pref('circlesRadius'))
 			circlesStart = float(self.pref('circlesStart'))
+			circles = float(self.pref('circles'))
+
+		print("circles active : " + str(circles))
 
 		filterHelper = FilterHelper(outlineStrokeWidth=strokeWidth, insetWidth=insetWidth, thisLayer=layer)
 		outlineLayer = filterHelper.createOutlineGlyphCopy(layer)
@@ -271,7 +285,7 @@ class ThorTypeFilter(FilterWithDialog):
 	@objc.python_method
 	def generateCustomParameter( self ):
 		self.registerDefaults()
-		return "%s; strokeWidth:%s insetWidth:%s hatchAngle:%s hatchStep:%s hatchStartY:%s hatchStroke:%s shadowOffset:%s shadowAngle:%s hatchOrigin:%s circlesAngle:%s circlesDistance:%s circlesEnd:%s circlesOrigin:%s circlesRadius:%s circlesStart:%s" % (
+		return "%s; strokeWidth:%s insetWidth:%s hatchAngle:%s hatchStep:%s hatchStartY:%s hatchStroke:%s shadowOffset:%s shadowAngle:%s hatchOrigin:%s circlesAngle:%s circlesDistance:%s circlesEnd:%s circlesOrigin:%s circlesRadius:%s circlesStart:%s circles:%s" % (
 			self.__class__.__name__,
 			self.pref('strokeWidth'),
 			self.pref('insetWidth'),
@@ -288,6 +302,7 @@ class ThorTypeFilter(FilterWithDialog):
 			self.pref('circlesOrigin'),
 			self.pref('circlesRadius'),
 			self.pref('circlesStart'),
+			self.pref('circles'),
 			)
 
 	@objc.python_method
