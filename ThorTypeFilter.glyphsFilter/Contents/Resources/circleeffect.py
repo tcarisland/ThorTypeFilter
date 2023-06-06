@@ -12,16 +12,35 @@ class CircleEffect():
 
 	@objc.python_method
 	def drawCircleColumn(self, originLayer, circlesOrigin, circlesRadius, circlesDistance, circlesAngle, circlesStart, circlesEnd):
-		effects = ThorTypeEffects()
-		layer = effects.hatchLayerWithOrigin(copy.deepcopy(originLayer), circlesAngle, 0, circlesDistance, circlesOrigin)
 		shapes = []
-		for myShape in layer.shapes.values()[(int(circlesStart)):-(int(circlesEnd))]:
-			x = round((myShape.nodes[0].position.x + myShape.nodes[1].position.x) / 2, 1)
-			y = round((myShape.nodes[0].position.y + myShape.nodes[1].position.y) / 2, 1)
-			circle = self.drawCircle([x, y], circlesRadius)
-			shapes.append(circle)
-		layer.shapes = shapes
-		return layer
+		layers = self.splitByShapesAndHatchIndividually(originLayer, circlesOrigin, circlesDistance, circlesAngle)
+		for layer in layers: 
+			for myShape in layer.shapes.values()[(int(circlesStart)):-(int(circlesEnd))]:
+				x = round((myShape.nodes[0].position.x + myShape.nodes[1].position.x) / 2, 1)
+				y = round((myShape.nodes[0].position.y + myShape.nodes[1].position.y) / 2, 1)
+				circle = self.drawCircle([x, y], circlesRadius)
+				shapes.append(circle)
+		resultLayer = copy.deepcopy(originLayer)
+		resultLayer.shapes = shapes
+		return resultLayer
+	
+	@objc.python_method
+	def splitByShapesAndHatchIndividually(self, originLayer, circlesOrigin, circlesDistance, circlesAngle):
+		hatchLayers = []
+		effects = ThorTypeEffects()
+		for myLayer in self.splitLayer(originLayer):
+			myLayer = effects.hatchLayerWithOrigin(copy.deepcopy(myLayer), circlesAngle, 0, circlesDistance, circlesOrigin)
+			hatchLayers.append(myLayer)
+		return hatchLayers
+	
+	@objc.python_method
+	def splitLayer(self, originLayer):
+		layers = []
+		for myShape in originLayer.shapes.values():
+			layer = copy.deepcopy(originLayer)
+			layer.shapes = [myShape]
+			layers.append(layer)
+		return layers
 
 	@objc.python_method
 	def drawCircle(self, origin, radius):
