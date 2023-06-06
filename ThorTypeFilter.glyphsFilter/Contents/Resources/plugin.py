@@ -95,7 +95,7 @@ class ThorTypeFilter(FilterWithDialog):
 		self.circlesRadiusTextField.setStringValue_(self.pref('circlesRadius'))
 		self.circlesEndTextField.setStringValue_(self.pref('circlesEnd'))
 		self.circlesStartTextField.setStringValue_(self.pref('circlesStart'))
-		self.circlesCheckbox.setBoolValue(self.pref('circles'))
+		self.circlesCheckbox.setState_(self.pref('circles'))
 		# Set focus to text field
 		self.strokeWidthTextField.becomeFirstResponder()
 		self.update()
@@ -117,7 +117,7 @@ class ThorTypeFilter(FilterWithDialog):
 		Glyphs.registerDefault(self.domain('circlesOrigin'), 0)
 		Glyphs.registerDefault(self.domain('circlesRadius'), 30)
 		Glyphs.registerDefault(self.domain('circlesStart'), 1)
-		Glyphs.registerDefault(self.domain('circles'), True)
+		Glyphs.registerDefault(self.domain('circles'), 1)
 
 
 	@objc.python_method
@@ -208,7 +208,7 @@ class ThorTypeFilter(FilterWithDialog):
 
 	@objc.IBAction
 	def setCircles_( self, sender):
-		Glyphs.defaults[self.domain('circles')] = sender.boolValue()
+		Glyphs.defaults[self.domain('circles')] = sender.state()
 		self.update()
 
 	# Actual filter
@@ -264,7 +264,7 @@ class ThorTypeFilter(FilterWithDialog):
 			circlesOrigin = float(self.pref('circlesOrigin'))
 			circlesRadius = float(self.pref('circlesRadius'))
 			circlesStart = float(self.pref('circlesStart'))
-			circles = float(self.pref('circles'))
+			circles = bool(self.pref('circles'))
 
 		print("circles active : " + str(circles))
 
@@ -274,18 +274,21 @@ class ThorTypeFilter(FilterWithDialog):
 		splitLayers = filterHelper.splitAndHatch(insetLayer, hatchStartY, hatchAngle, 500, hatchStroke, hatchStep, hatchOrigin)
 
 		circleEffect = CircleEffect()
-		circleLayer = circleEffect.drawCircleColumn(splitLayers[1], circlesOrigin, circlesRadius, circlesDistance, circlesAngle, circlesStart, circlesEnd)
+		circleShapes = []
+		if(circles):
+			circleLayer = circleEffect.drawCircleColumn(splitLayers[1], circlesOrigin, circlesRadius, circlesDistance, circlesAngle, circlesStart, circlesEnd)
+			circleShapes = circleLayer.shapes.values()
 
 		shadowEffect = ShadowEffect(outlineStrokeWidth=strokeWidth)
 		shadowBaseLayer = shadowEffect.prepareOutlineForShadow(layer)
 		shadowLayer = shadowEffect.applyShadow(shadowBaseLayer, shadowOffset, shadowAngle)
 
-		layer.shapes = outlineLayer.shapes + splitLayers[0].shapes.values() + splitLayers[1].shapes.values() + shadowLayer.shapes.values() + circleLayer.shapes.values()
+		layer.shapes = outlineLayer.shapes + splitLayers[0].shapes.values() + splitLayers[1].shapes.values() + shadowLayer.shapes.values() + circleShapes
 	
 	@objc.python_method
 	def generateCustomParameter( self ):
 		self.registerDefaults()
-		return "%s; strokeWidth:%s insetWidth:%s hatchAngle:%s hatchStep:%s hatchStartY:%s hatchStroke:%s shadowOffset:%s shadowAngle:%s hatchOrigin:%s circlesAngle:%s circlesDistance:%s circlesEnd:%s circlesOrigin:%s circlesRadius:%s circlesStart:%s circles:%s" % (
+		return "%s; strokeWidth:%s insetWidth:%s hatchAngle:%s hatchStep:%s hatchStartY:%s hatchStroke:%s shadowOffset:%s shadowAngle:%s hatchOrigin:%s circlesAngle:%s circlesDistance:%s circlesEnd:%s circlesOrigin:%s circlesRadius:%s circlesStart:%s circles:%i" % (
 			self.__class__.__name__,
 			self.pref('strokeWidth'),
 			self.pref('insetWidth'),
