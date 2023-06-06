@@ -206,10 +206,21 @@ class ThorTypeFilter(FilterWithDialog):
 		Glyphs.defaults[self.domain('circlesStart')] = sender.floatValue()
 		self.update()
 
+
 	@objc.IBAction
 	def setCircles_( self, sender):
 		Glyphs.defaults[self.domain('circles')] = sender.state()
+		self.enableCircleTextFields(bool(sender.state()))
 		self.update()
+
+	@objc.python_method
+	def enableCircleTextFields( self, areCheckboxesEnabled ):
+		self.circlesOriginTextField.setEnabled_(areCheckboxesEnabled)
+		self.circlesRadiusTextField.setEnabled_(areCheckboxesEnabled)
+		self.circlesDistanceTextField.setEnabled_(areCheckboxesEnabled)
+		self.circlesAngleTextField.setEnabled_(areCheckboxesEnabled)
+		self.circlesStartTextField.setEnabled_(areCheckboxesEnabled)
+		self.circlesEndTextField.setEnabled_(areCheckboxesEnabled)
 
 	# Actual filter
 	@objc.python_method
@@ -265,8 +276,6 @@ class ThorTypeFilter(FilterWithDialog):
 			circlesRadius = float(self.pref('circlesRadius'))
 			circlesStart = float(self.pref('circlesStart'))
 			circles = bool(self.pref('circles'))
-
-		print("circles active : " + str(circles))
 
 		filterHelper = FilterHelper(outlineStrokeWidth=strokeWidth, insetWidth=insetWidth, thisLayer=layer)
 		outlineLayer = filterHelper.createOutlineGlyphCopy(layer)
