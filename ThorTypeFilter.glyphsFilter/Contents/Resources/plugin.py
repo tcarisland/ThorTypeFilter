@@ -51,6 +51,8 @@ class ThorTypeFilter(FilterWithDialog):
 	circlesRadiusTextField = objc.IBOutlet()
 	circlesStartTextField = objc.IBOutlet()
 	circlesCheckbox = objc.IBOutlet()
+	palette = objc.IBOutlet()
+	paletteLength = objc.IBOutlet()
 
 	@objc.python_method
 	def settings(self):
@@ -96,8 +98,15 @@ class ThorTypeFilter(FilterWithDialog):
 		self.circlesEndTextField.setStringValue_(self.pref('circlesEnd'))
 		self.circlesStartTextField.setStringValue_(self.pref('circlesStart'))
 		self.circlesCheckbox.setState_(self.pref('circles'))
+		
+		self.palette.setStringValue_(palette)
+		self.paletteLength.setIntegerValue_(len(palette))
 		# Set focus to text field
 		self.strokeWidthTextField.becomeFirstResponder()
+		font = Glyphs.fonts[0]
+		palette = font.customParameters['Color Palettes'][0]
+		print(str(palette))
+		print(str(len(palette)))
 		self.update()
 
 	@objc.python_method
@@ -226,6 +235,7 @@ class ThorTypeFilter(FilterWithDialog):
 	@objc.python_method
 	def filter(self, layer, inEditView, customParameters):
 		layer.removeOverlap()
+		#print(str(layer.parent.parent.customParameters['Color Palettes'][0]))
 		if len(customParameters) > 0:
 			if 'strokeWidth' in customParameters:
 				print("strokeWidth " + customParameters['strokeWidth'])
@@ -280,7 +290,7 @@ class ThorTypeFilter(FilterWithDialog):
 		filterHelper = FilterHelper(outlineStrokeWidth=strokeWidth, insetWidth=insetWidth, thisLayer=layer)
 		outlineLayer = filterHelper.createOutlineGlyphCopy(layer)
 		insetLayer = filterHelper.createInsetGlyphCopy(layer)
-		splitLayers = filterHelper.splitAndHatch(insetLayer, hatchStartY, hatchAngle, 500, hatchStroke, hatchStep, hatchOrigin)
+		splitLayers = filterHelper.splitAndHatch(insetLayer, hatchStartY, hatchAngle, 2000, hatchStroke, hatchStep, hatchOrigin)
 
 		circleEffect = CircleEffect()
 		circleShapes = []
