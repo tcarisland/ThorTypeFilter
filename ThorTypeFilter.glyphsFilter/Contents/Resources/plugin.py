@@ -51,6 +51,7 @@ class ThorTypeFilter(FilterWithDialog):
 	circlesRadiusTextField = objc.IBOutlet()
 	circlesStartTextField = objc.IBOutlet()
 	circlesCheckbox = objc.IBOutlet()
+	aShadowColorComboBox = objc.IBOutlet()
 	palette = objc.IBOutlet()
 	paletteLength = objc.IBOutlet()
 
@@ -97,10 +98,11 @@ class ThorTypeFilter(FilterWithDialog):
 		self.circlesRadiusTextField.setStringValue_(self.pref('circlesRadius'))
 		self.circlesEndTextField.setStringValue_(self.pref('circlesEnd'))
 		self.circlesStartTextField.setStringValue_(self.pref('circlesStart'))
+		self.aShadowColorComboBox.setStringValue_(self.pref('aShadowColor'))
 		self.circlesCheckbox.setState_(self.pref('circles'))
-		
-		self.palette.setStringValue_(palette)
-		self.paletteLength.setIntegerValue_(len(palette))
+
+		#self.palette.setStringValue_(palette)
+		#self.paletteLength.setIntegerValue_(len(palette))
 		# Set focus to text field
 		self.strokeWidthTextField.becomeFirstResponder()
 		font = Glyphs.fonts[0]
@@ -127,6 +129,7 @@ class ThorTypeFilter(FilterWithDialog):
 		Glyphs.registerDefault(self.domain('circlesRadius'), 30)
 		Glyphs.registerDefault(self.domain('circlesStart'), 1)
 		Glyphs.registerDefault(self.domain('circles'), 1)
+		Glyphs.registerDefault(self.domain('aShadowColor'), "")
 
 
 	@objc.python_method
@@ -215,11 +218,16 @@ class ThorTypeFilter(FilterWithDialog):
 		Glyphs.defaults[self.domain('circlesStart')] = sender.floatValue()
 		self.update()
 
-
 	@objc.IBAction
 	def setCircles_( self, sender):
 		Glyphs.defaults[self.domain('circles')] = sender.state()
 		self.enableCircleTextFields(bool(sender.state()))
+		self.update()
+
+	@objc.IBAction
+	def setAShadowColor_( self, sender):
+		Glyphs.defaults[self.domain('aShadowColor')] = sender.stringValue()
+		print(str(sender.stringValue()))
 		self.update()
 
 	@objc.python_method
@@ -269,6 +277,8 @@ class ThorTypeFilter(FilterWithDialog):
 				print("circlesStart " + customParameters['circlesStart'])
 			if 'circles' in customParameters:
 				print("circles " + customParameters['circles'])
+			if 'aShadowColor' in customParameters:
+				print("aShadowColor" + customParameters['aShadowColor'])
 		else: 
 			strokeWidth = float(self.pref('strokeWidth'))
 			insetWidth = float(self.pref('insetWidth'))
@@ -285,6 +295,7 @@ class ThorTypeFilter(FilterWithDialog):
 			circlesOrigin = float(self.pref('circlesOrigin'))
 			circlesRadius = float(self.pref('circlesRadius'))
 			circlesStart = float(self.pref('circlesStart'))
+			aShadowColor = str(self.pref('aShadowColor'))
 			circles = bool(self.pref('circles'))
 
 		filterHelper = FilterHelper(outlineStrokeWidth=strokeWidth, insetWidth=insetWidth, thisLayer=layer)
@@ -307,7 +318,7 @@ class ThorTypeFilter(FilterWithDialog):
 	@objc.python_method
 	def generateCustomParameter( self ):
 		self.registerDefaults()
-		return "%s; strokeWidth:%s insetWidth:%s hatchAngle:%s hatchStep:%s hatchStartY:%s hatchStroke:%s shadowOffset:%s shadowAngle:%s hatchOrigin:%s circlesAngle:%s circlesDistance:%s circlesEnd:%s circlesOrigin:%s circlesRadius:%s circlesStart:%s circles:%i" % (
+		return "%s; strokeWidth:%s insetWidth:%s hatchAngle:%s hatchStep:%s hatchStartY:%s hatchStroke:%s shadowOffset:%s shadowAngle:%s hatchOrigin:%s circlesAngle:%s circlesDistance:%s circlesEnd:%s circlesOrigin:%s circlesRadius:%s circlesStart:%s circles:%i, aShadowColor:%s" % (
 			self.__class__.__name__,
 			self.pref('strokeWidth'),
 			self.pref('insetWidth'),
@@ -325,6 +336,7 @@ class ThorTypeFilter(FilterWithDialog):
 			self.pref('circlesRadius'),
 			self.pref('circlesStart'),
 			self.pref('circles'),
+			self.pref('aShadowColor')
 			)
 
 	@objc.python_method

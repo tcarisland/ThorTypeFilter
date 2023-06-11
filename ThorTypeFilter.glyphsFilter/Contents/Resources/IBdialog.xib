@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="____PluginClassName____">
             <connections>
+                <outlet property="aShadowColorComboBox" destination="eso-TM-f1B" id="zWe-by-PDQ"/>
                 <outlet property="circlesAngleTextField" destination="LmL-Uj-F9U" id="zWe-by-PDL"/>
                 <outlet property="circlesCheckbox" destination="5oB-0n-k5H" id="zWe-by-PDP"/>
                 <outlet property="circlesDistanceTextField" destination="Nxe-c9-KF2" id="zWe-by-PDK"/>
@@ -380,6 +381,9 @@
                             <string>Item 3</string>
                         </objectValues>
                     </comboBoxCell>
+                    <connections>
+                        <action selector="setAShadowColor:" target="-2" id="JZq-io-3KX"/>
+                    </connections>
                 </comboBox>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hpc-tY-JW9">
                     <rect key="frame" x="269" y="186" width="99" height="17"/>
