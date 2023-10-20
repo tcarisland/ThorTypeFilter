@@ -1,8 +1,9 @@
 import copy
 import math
+# noinspection PyUnresolvedReferences
 import objc
+# noinspection PyUnresolvedReferences
 from Foundation import NSPoint
-from effects import ThorTypeEffects
 
 class FilterHelper():
 
@@ -33,7 +34,7 @@ class FilterHelper():
 		return layer
 		
 	@objc.python_method
-	def splitAndHatch(self, sourceLayer, yInitial, theta, width, hatchStroke, hatchStep, hatchOrigin):
+	def split(self, sourceLayer, yInitial, theta, width):
 		layer = copy.deepcopy(sourceLayer)
 		layer.cutBetweenPoints(NSPoint(0, yInitial), NSPoint(width, self.getAngleEndCoordinates(width, yInitial, theta)))
 		lower = []
@@ -49,13 +50,7 @@ class FilterHelper():
 				lower.append(myShape)
 			else:
 				upper.append(myShape)
-		layerCopy = copy.deepcopy(layer)
-		layerCopy.shapes = lower
-		effects = ThorTypeEffects()
-		lowerLayer = effects.hatchLayerWithOrigin(layerCopy, theta, hatchStroke, hatchStep, hatchOrigin)
-		upperLayer = copy.deepcopy(layer)
-		upperLayer.shapes = upper
-		return [lowerLayer, upperLayer]
+		return [lower, upper]
 				
 	@objc.python_method
 	def getAngleEndCoordinates(self, x, y, theta):

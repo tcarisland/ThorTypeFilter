@@ -1,9 +1,14 @@
 import copy
 import math
+# noinspection PyUnresolvedReferences
 import objc
+# noinspection PyUnresolvedReferences
 from GlyphsApp import *
+# noinspection PyUnresolvedReferences
 from GlyphsApp.plugins import *
+# noinspection PyUnresolvedReferences
 from Foundation import NSMakePoint
+# noinspection PyUnresolvedReferences
 from Foundation import NSClassFromString
 
 class ThorTypeEffects():

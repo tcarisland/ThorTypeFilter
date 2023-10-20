@@ -15,15 +15,22 @@
 ###########################################################################################################
 
 from __future__ import division, print_function, unicode_literals
+# add all missing import statements to the IDEs ignore list
+# noinspection PyUnresolvedReferences
 import objc
 import copy
+# noinspection PyUnresolvedReferences
 from GlyphsApp import *
+# noinspection PyUnresolvedReferences
 from GlyphsApp.plugins import *
+# noinspection PyUnresolvedReferences
 from Foundation import NSClassFromString
 from filterutils import FilterHelper
 from shadoweffect import ShadowEffect
 from circleeffect import CircleEffect
+from effects import ThorTypeEffects
 
+# noinspection PyUnresolvedReferences
 class ThorTypeFilter(FilterWithDialog):
 
 	prefID= "com.tcarisland.ThorTypeFilter"
@@ -301,19 +308,27 @@ class ThorTypeFilter(FilterWithDialog):
 		filterHelper = FilterHelper(outlineStrokeWidth=strokeWidth, insetWidth=insetWidth, thisLayer=layer)
 		outlineLayer = filterHelper.createOutlineGlyphCopy(layer)
 		insetLayer = filterHelper.createInsetGlyphCopy(layer)
-		splitLayers = filterHelper.splitAndHatch(insetLayer, hatchStartY, hatchAngle, 2000, hatchStroke, hatchStep, hatchOrigin)
+		splitLayers = filterHelper.split(insetLayer, hatchStartY, hatchAngle, 2000)
 
-		circleEffect = CircleEffect()
-		circleShapes = []
-		if(circles):
-			circleLayer = circleEffect.drawCircleColumn(splitLayers[1], circlesOrigin, circlesRadius, circlesDistance, circlesAngle, circlesStart, circlesEnd)
-			circleShapes = circleLayer.shapes.values()
 
 		shadowEffect = ShadowEffect(outlineStrokeWidth=strokeWidth)
 		shadowBaseLayer = shadowEffect.prepareOutlineForShadow(layer)
 		shadowLayer = shadowEffect.applyShadow(shadowBaseLayer, shadowOffset, shadowAngle)
 
-		layer.shapes = outlineLayer.shapes + splitLayers[0].shapes.values() + splitLayers[1].shapes.values() + shadowLayer.shapes.values() + circleShapes
+		effects = ThorTypeEffects()
+		layer.shapes = splitLayers[0]
+		layer = effects.hatchLayerWithOrigin(layer, hatchAngle, hatchStroke, hatchStep, hatchOrigin)
+		shapes = layer.shapes + outlineLayer.shapes + splitLayers[1] + shadowLayer.shapes.values()
+
+		#circleEffect = CircleEffect()
+		#circleShapes = []
+		#layer.shapes = splitLayers[1]
+		#if(circles):
+		#	circleLayer = circleEffect.drawCircleColumn(layer, circlesOrigin, circlesRadius, circlesDistance, circlesAngle, circlesStart, circlesEnd)
+		#	circleShapes = circleLayer.shapes.values()
+		layer.shapes = layer.shapes + shapes
+
+
 	
 	@objc.python_method
 	def generateCustomParameter( self ):

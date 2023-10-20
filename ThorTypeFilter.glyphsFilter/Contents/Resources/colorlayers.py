@@ -3,6 +3,7 @@ palettes = [3, 1, 2, 0, 4, 1]
 
 def addColorLayers(glyph, palettes, masterID):
 	for c in palettes:
+		# noinspection PyUnresolvedReferences
 		layer = GSLayer()
 		layer.associatedMasterId = masterID
 		layer.attributes['colorPalette'] = c

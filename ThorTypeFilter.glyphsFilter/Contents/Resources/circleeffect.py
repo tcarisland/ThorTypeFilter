@@ -1,7 +1,11 @@
+# noinspection PyUnresolvedReferences
 import objc
 import copy
+# noinspection PyUnresolvedReferences
 from GlyphsApp import *
+# noinspection PyUnresolvedReferences
 from GlyphsApp.plugins import *
+# noinspection PyUnresolvedReferences
 from Foundation import NSMakePoint
 from effects import ThorTypeEffects
 
@@ -44,12 +48,14 @@ class CircleEffect():
 
 	@objc.python_method
 	def drawCircle(self, origin, radius):
+		# noinspection PyUnresolvedReferences
 		circle = GSPath()
 		half = radius * 0.55
 		at = [0, half, radius, -half, -radius]
 		table = [(1, 4), (2, 3), (2, 0), (2, 1), (1, 2), (0, 2), (3, 2), (4, 1), (4, 0), (4, 3), (3, 4), (0, 4)]
 		nodes = []
 		for i, (x_index, y_index) in enumerate(table):
+			# noinspection PyUnresolvedReferences
 			node = GSNode()
 			if (i + 1) % 3 == 0:
 				node.type = "curve"

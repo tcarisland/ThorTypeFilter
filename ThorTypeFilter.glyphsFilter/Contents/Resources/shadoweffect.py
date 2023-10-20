@@ -1,14 +1,21 @@
 import copy
-import math
+# noinspection PyUnresolvedReferences
 import objc
+# noinspection PyUnresolvedReferences
 from Foundation import NSPoint
+# noinspection PyUnresolvedReferences
 from Foundation import NSClassFromString
 
+# noinspection PyUnresolvedReferences
 from GlyphsApp import *
+# noinspection PyUnresolvedReferences
 from GlyphsApp.plugins import *
+# noinspection PyUnresolvedReferences
 from GlyphsApp import subtractPaths as subtractPaths
 
+# noinspection PyUnresolvedReferences
 from AppKit import NSAffineTransform, NSAffineTransformStruct
+# noinspection PyUnresolvedReferences
 from Foundation import NSClassFromString
 
 
