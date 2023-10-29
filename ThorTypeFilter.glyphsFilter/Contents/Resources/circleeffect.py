@@ -18,22 +18,22 @@ class CircleEffect():
 	def drawCircleColumn(self, originLayer, circlesOrigin, circlesRadius, circlesDistance, circlesAngle, circlesStart, circlesEnd):
 		shapes = []
 		layers = self.splitByShapesAndHatchIndividually(originLayer, circlesOrigin, circlesDistance, circlesAngle)
-		for layer in layers: 
+		for layer in layers:
 			for myShape in layer.shapes.values()[(int(circlesStart)):-(int(circlesEnd))]:
 				x = round((myShape.nodes[0].position.x + myShape.nodes[1].position.x) / 2, 1)
 				y = round((myShape.nodes[0].position.y + myShape.nodes[1].position.y) / 2, 1)
 				circle = self.drawCircle([x, y], circlesRadius)
 				shapes.append(circle)
-		resultLayer = copy.deepcopy(originLayer)
-		resultLayer.shapes = shapes
-		return resultLayer
+		return shapes
 	
 	@objc.python_method
 	def splitByShapesAndHatchIndividually(self, originLayer, circlesOrigin, circlesDistance, circlesAngle):
 		hatchLayers = []
 		effects = ThorTypeEffects()
 		for myLayer in self.splitLayer(originLayer):
-			myLayer = effects.hatchLayerWithOrigin(copy.deepcopy(myLayer), circlesAngle, 0, circlesDistance, circlesOrigin)
+			originLayer.shapes = myLayer.shapes
+			originLayer = effects.hatchLayerWithOrigin(originLayer, circlesAngle, 0, circlesDistance, circlesOrigin)
+			myLayer = copy.deepcopy(originLayer)
 			hatchLayers.append(myLayer)
 		return hatchLayers
 	

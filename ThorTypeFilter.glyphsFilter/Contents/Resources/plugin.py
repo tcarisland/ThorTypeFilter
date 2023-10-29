@@ -108,14 +108,10 @@ class ThorTypeFilter(FilterWithDialog):
 		self.aShadowColorComboBox.setStringValue_(self.pref('aShadowColor'))
 		self.circlesCheckbox.setState_(self.pref('circles'))
 
-		#self.palette.setStringValue_(palette)
-		#self.paletteLength.setIntegerValue_(len(palette))
 		# Set focus to text field
 		self.strokeWidthTextField.becomeFirstResponder()
 		font = Glyphs.fonts[0]
 		palette = font.customParameters['Color Palettes'][0]
-		print(str(palette))
-		print(str(len(palette)))
 		self.update()
 
 	@objc.python_method
@@ -234,7 +230,6 @@ class ThorTypeFilter(FilterWithDialog):
 	@objc.IBAction
 	def setAShadowColor_( self, sender):
 		Glyphs.defaults[self.domain('aShadowColor')] = sender.stringValue()
-		print(str(sender.stringValue()))
 		self.update()
 
 	@objc.python_method
@@ -320,13 +315,15 @@ class ThorTypeFilter(FilterWithDialog):
 		layer = effects.hatchLayerWithOrigin(layer, hatchAngle, hatchStroke, hatchStep, hatchOrigin)
 		shapes = layer.shapes + outlineLayer.shapes + splitLayers[1] + shadowLayer.shapes.values()
 
-		#circleEffect = CircleEffect()
-		#circleShapes = []
-		#layer.shapes = splitLayers[1]
-		#if(circles):
-		#	circleLayer = circleEffect.drawCircleColumn(layer, circlesOrigin, circlesRadius, circlesDistance, circlesAngle, circlesStart, circlesEnd)
-		#	circleShapes = circleLayer.shapes.values()
-		layer.shapes = layer.shapes + shapes
+		circleEffect = CircleEffect()
+		circleShapes = []
+		layer.shapes = splitLayers[1]
+		if(circles):
+			circleShapes = circleEffect.drawCircleColumn(layer, circlesOrigin, circlesRadius, circlesDistance, circlesAngle, circlesStart, circlesEnd)
+
+		print("circleShapes " + str(circleShapes))
+
+		layer.shapes = layer.shapes + shapes + circleShapes
 
 
 	
