@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22154" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22154"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="____PluginClassName____">
             <connections>
-                <outlet property="aShadowColorComboBox" destination="eso-TM-f1B" id="zWe-by-PDQ"/>
                 <outlet property="circlesAngleTextField" destination="LmL-Uj-F9U" id="zWe-by-PDL"/>
                 <outlet property="circlesCheckbox" destination="5oB-0n-k5H" id="zWe-by-PDP"/>
                 <outlet property="circlesDistanceTextField" destination="Nxe-c9-KF2" id="zWe-by-PDK"/>
@@ -15,6 +14,7 @@
                 <outlet property="circlesOriginTextField" destination="P4K-Y5-CDK" id="zWe-by-PDI"/>
                 <outlet property="circlesRadiusTextField" destination="VgH-Ok-7u0" id="zWe-by-PDJ"/>
                 <outlet property="circlesStartTextField" destination="sEb-gi-GgO" id="zWe-by-PDM"/>
+                <outlet property="colorLayersCheckbox" destination="cfA-n9-7d6" id="zWe-by-PDQ"/>
                 <outlet property="dialog" destination="1" id="kzC-yw-bol"/>
                 <outlet property="hatchAngleTextField" destination="Azl-Jy-VV9" id="zWe-by-PDB"/>
                 <outlet property="hatchOriginTextField" destination="c7A-lq-cjb" id="zWe-by-PDA"/>
@@ -30,11 +30,11 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="1">
-            <rect key="frame" x="0.0" y="0.0" width="484" height="584"/>
+            <rect key="frame" x="0.0" y="0.0" width="484" height="428"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O8f-Or-SWt">
-                    <rect key="frame" x="18" y="547" width="99" height="17"/>
+                    <rect key="frame" x="18" y="391" width="99" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Stroke Width" id="dPX-2j-6DZ">
                         <font key="font" metaFont="system"/>
@@ -43,7 +43,7 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AbI-V2-lVZ">
-                    <rect key="frame" x="18" y="513" width="99" height="17"/>
+                    <rect key="frame" x="18" y="357" width="99" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Inset Width" id="Ib7-Bb-cSq">
                         <font key="font" metaFont="system"/>
@@ -52,7 +52,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vfg-c5-0Yw" customClass="GSSteppingTextField">
-                    <rect key="frame" x="123" y="545" width="90" height="22"/>
+                    <rect key="frame" x="123" y="389" width="90" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="19c-la-cXO">
                         <font key="font" metaFont="system"/>
@@ -64,7 +64,7 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tIK-wk-EWY" customClass="GSSteppingTextField">
-                    <rect key="frame" x="123" y="509" width="90" height="22"/>
+                    <rect key="frame" x="123" y="353" width="90" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="qE7-7b-T5w">
                         <font key="font" metaFont="system"/>
@@ -76,7 +76,7 @@
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0L8-TT-FdU">
-                    <rect key="frame" x="18" y="456" width="99" height="17"/>
+                    <rect key="frame" x="18" y="300" width="99" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Hatch Angle" id="kJg-0m-B8u">
                         <font key="font" metaFont="system"/>
@@ -85,7 +85,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Azl-Jy-VV9" customClass="GSSteppingTextField">
-                    <rect key="frame" x="123" y="452" width="90" height="22"/>
+                    <rect key="frame" x="123" y="296" width="90" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="9bJ-3J-JOl">
                         <font key="font" metaFont="system"/>
@@ -97,7 +97,7 @@
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B7j-Fe-LF2">
-                    <rect key="frame" x="18" y="419" width="99" height="17"/>
+                    <rect key="frame" x="18" y="263" width="99" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Hatch Step" id="228-Qg-mhb">
                         <font key="font" metaFont="system"/>
@@ -106,7 +106,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oHe-L4-yNY" customClass="GSSteppingTextField">
-                    <rect key="frame" x="123" y="415" width="90" height="22"/>
+                    <rect key="frame" x="123" y="259" width="90" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="JtI-gR-3lX">
                         <font key="font" metaFont="system"/>
@@ -118,7 +118,7 @@
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KfN-ow-dsF">
-                    <rect key="frame" x="18" y="381" width="99" height="17"/>
+                    <rect key="frame" x="18" y="225" width="99" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Hatch Start Y" id="qCR-ul-jAY">
                         <font key="font" metaFont="system"/>
@@ -127,7 +127,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="enO-X9-c2m" customClass="GSSteppingTextField">
-                    <rect key="frame" x="123" y="377" width="90" height="22"/>
+                    <rect key="frame" x="123" y="221" width="90" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="S2g-oV-g1n">
                         <font key="font" metaFont="system"/>
@@ -139,7 +139,7 @@
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GXN-Wo-bNM">
-                    <rect key="frame" x="18" y="345" width="99" height="17"/>
+                    <rect key="frame" x="18" y="189" width="99" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Hatch Stroke" id="wuK-aQ-ixB">
                         <font key="font" metaFont="system"/>
@@ -148,7 +148,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T3s-rw-Xjb" customClass="GSSteppingTextField">
-                    <rect key="frame" x="123" y="341" width="90" height="22"/>
+                    <rect key="frame" x="123" y="185" width="90" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="BSr-Sh-ZWo">
                         <font key="font" metaFont="system"/>
@@ -160,7 +160,7 @@
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uk7-Yd-53D">
-                    <rect key="frame" x="18" y="306" width="99" height="17"/>
+                    <rect key="frame" x="18" y="150" width="99" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Hatch Origin" id="g3s-qa-boQ">
                         <font key="font" metaFont="system"/>
@@ -169,7 +169,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c7A-lq-cjb" customClass="GSSteppingTextField">
-                    <rect key="frame" x="123" y="302" width="90" height="22"/>
+                    <rect key="frame" x="123" y="146" width="90" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="9cL-oJ-RbT">
                         <font key="font" metaFont="system"/>
@@ -181,7 +181,7 @@
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="99G-nx-j4v">
-                    <rect key="frame" x="18" y="223" width="99" height="17"/>
+                    <rect key="frame" x="18" y="67" width="99" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Shadow Offset" id="d0G-BJ-nl2">
                         <font key="font" metaFont="system"/>
@@ -190,7 +190,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rwv-GZ-eXe" customClass="GSSteppingTextField">
-                    <rect key="frame" x="123" y="219" width="90" height="22"/>
+                    <rect key="frame" x="123" y="63" width="90" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="IIa-60-9rp">
                         <font key="font" metaFont="system"/>
@@ -202,7 +202,7 @@
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bX0-Ta-e4I">
-                    <rect key="frame" x="18" y="187" width="99" height="17"/>
+                    <rect key="frame" x="18" y="31" width="99" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Shadow Angle" id="Umq-k4-Tds">
                         <font key="font" metaFont="system"/>
@@ -211,7 +211,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qv4-Ta-S1U" customClass="GSSteppingTextField">
-                    <rect key="frame" x="123" y="183" width="90" height="22"/>
+                    <rect key="frame" x="123" y="27" width="90" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="usu-7g-zYm">
                         <font key="font" metaFont="system"/>
@@ -223,7 +223,7 @@
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7qV-3L-y6X">
-                    <rect key="frame" x="269" y="515" width="99" height="17"/>
+                    <rect key="frame" x="269" y="359" width="99" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Circles Origin" id="zSG-S9-OmQ">
                         <font key="font" metaFont="system"/>
@@ -232,7 +232,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="P4K-Y5-CDK" customClass="GSSteppingTextField">
-                    <rect key="frame" x="374" y="511" width="90" height="22"/>
+                    <rect key="frame" x="374" y="355" width="90" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="LSM-o3-e33">
                         <font key="font" metaFont="system"/>
@@ -244,7 +244,7 @@
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kQW-ex-wCb">
-                    <rect key="frame" x="269" y="479" width="99" height="17"/>
+                    <rect key="frame" x="269" y="323" width="99" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Circles Radius" id="3Ur-vi-WVt">
                         <font key="font" metaFont="system"/>
@@ -253,7 +253,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VgH-Ok-7u0" customClass="GSSteppingTextField">
-                    <rect key="frame" x="374" y="475" width="90" height="22"/>
+                    <rect key="frame" x="374" y="319" width="90" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="v9w-1q-pdw">
                         <font key="font" metaFont="system"/>
@@ -265,7 +265,7 @@
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jJg-tj-2uq">
-                    <rect key="frame" x="269" y="443" width="103" height="17"/>
+                    <rect key="frame" x="269" y="287" width="103" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Circles Distance" id="M1G-xb-XsT">
                         <font key="font" metaFont="system"/>
@@ -274,7 +274,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nxe-c9-KF2" customClass="GSSteppingTextField">
-                    <rect key="frame" x="374" y="439" width="90" height="22"/>
+                    <rect key="frame" x="374" y="283" width="90" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="lCh-kq-nYP">
                         <font key="font" metaFont="system"/>
@@ -286,7 +286,7 @@
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="25c-gq-vei">
-                    <rect key="frame" x="269" y="407" width="99" height="17"/>
+                    <rect key="frame" x="269" y="251" width="99" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Circles Angle" id="E0p-bU-Z3C">
                         <font key="font" metaFont="system"/>
@@ -295,7 +295,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LmL-Uj-F9U" customClass="GSSteppingTextField">
-                    <rect key="frame" x="374" y="403" width="90" height="22"/>
+                    <rect key="frame" x="374" y="247" width="90" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="e0e-V5-r6z">
                         <font key="font" metaFont="system"/>
@@ -307,7 +307,7 @@
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KMt-Rv-2Ae">
-                    <rect key="frame" x="269" y="371" width="103" height="17"/>
+                    <rect key="frame" x="269" y="215" width="103" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Circles Start" id="gJm-R6-b9o">
                         <font key="font" metaFont="system"/>
@@ -316,7 +316,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sEb-gi-GgO" customClass="GSSteppingTextField">
-                    <rect key="frame" x="374" y="367" width="90" height="22"/>
+                    <rect key="frame" x="374" y="211" width="90" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="gHf-Sn-f0i">
                         <font key="font" metaFont="system"/>
@@ -328,7 +328,7 @@
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jzu-Q3-rdg">
-                    <rect key="frame" x="269" y="335" width="99" height="17"/>
+                    <rect key="frame" x="269" y="179" width="99" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Circles End" id="BlL-ED-qsV">
                         <font key="font" metaFont="system"/>
@@ -337,7 +337,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wwx-cQ-Y6y" customClass="GSSteppingTextField">
-                    <rect key="frame" x="374" y="331" width="90" height="22"/>
+                    <rect key="frame" x="374" y="175" width="90" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="RMf-K9-MOh">
                         <font key="font" metaFont="system"/>
@@ -349,7 +349,7 @@
                     </connections>
                 </textField>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mUo-gC-DcD">
-                    <rect key="frame" x="386" y="550" width="68" height="18"/>
+                    <rect key="frame" x="386" y="394" width="68" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Circles" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="5oB-0n-k5H">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -359,57 +359,19 @@
                         <action selector="setCircles:" target="-2" id="JZq-io-0KX"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RdS-NQ-BVh">
-                    <rect key="frame" x="269" y="224" width="99" height="17"/>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jnp-nY-yPz">
+                    <rect key="frame" x="317" y="83" width="102" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="A Shadow L" id="g2T-ME-OHU">
+                    <buttonCell key="cell" type="check" title="Color Layers" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="cfA-n9-7d6">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <comboBox verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eso-TM-f1B">
-                    <rect key="frame" x="373" y="220" width="99" height="23"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="gU9-de-obT">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        <objectValues>
-                            <string>Item 1</string>
-                            <string>Item 2</string>
-                            <string>Item 3</string>
-                        </objectValues>
-                    </comboBoxCell>
+                    </buttonCell>
                     <connections>
-                        <action selector="setAShadowColor:" target="-2" id="JZq-io-3KX"/>
+                        <action selector="setColorLayers:" target="-2" id="tO5-1k-c8r"/>
                     </connections>
-                </comboBox>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hpc-tY-JW9">
-                    <rect key="frame" x="269" y="186" width="99" height="17"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="B Shadow" id="5Dq-pY-kmE">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <comboBox verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xx3-Mj-2Rm">
-                    <rect key="frame" x="373" y="182" width="99" height="23"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="h5I-0e-PdG">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        <objectValues>
-                            <string>Item 1</string>
-                            <string>Item 2</string>
-                            <string>Item 3</string>
-                        </objectValues>
-                    </comboBoxCell>
-                </comboBox>
+                </button>
             </subviews>
-            <point key="canvasLocation" x="0.0" y="328"/>
+            <point key="canvasLocation" x="0.0" y="250"/>
         </customView>
     </objects>
 </document>
